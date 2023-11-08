@@ -15,6 +15,7 @@ Version 1.0.1
 ##### Variables ###############################
 # KIBABA - Kibana IP Address
 # ELASTICSEARCH - Elasticsearch IP Address
+# DOMAIN - Email Domain
 ###############################################
 
 #################
@@ -45,6 +46,10 @@ read -p "Use EricServic.es Repository [y/N]:" ESREPO
 ESREPO="${ESREPO:=n}"
 echo "$ESREPO"
 
+read -p "Set DOMAIN [ericembling.me]:" DOMAIN
+DOMAIN="${DOMAIN:=n}"
+echo "$DOMAIN"
+
 read -p "Set KIBANA [192.168.1.13]:" KIBANA
 KIBANA="${KIBANA:=192.168.1.13}"
 echo "$KIBANA"
@@ -53,9 +58,9 @@ read -p "Set ELASTICSEARCH [192.168.1.23]:" ELASTICSEARCH
 ELASTICSEARCH="${ELASTICSEARCH:=192.168.1.23}"
 echo "$ELASTICSEARCH"
 
-###################
-# End of Variables
-###################
+####################
+# End of Variables #
+####################
 
 
 ######################
@@ -125,6 +130,7 @@ sleep 1
 
 ROCKYBASEOS_FILE=/etc/yum.repos.d/Rocky-BaseOS.repo.old
 ROCKYAPPSTREAM_FILE=/etc/yum.repos.d/Rocky-AppStream.repo.old
+
 if test -f "$ROCKYBASEOS_FILE"; then
     echo -e "$ROCKYBASEOS_FILE already exists, no need to move.\n"
 fi
@@ -133,8 +139,6 @@ if [ ! -f "$ROCKYBASEOS_FILE" ]
 then 
 mv /etc/yum.repos.d/Rocky-BaseOS.repo /etc/yum.repos.d/Rocky-BaseOS.repo.old
 fi
-
-
 
 if test -f "$ROCKYAPPSTREAM_FILE"; then
     echo -e "$ROCKYAPPSTREAM_FILE already exists, no need to move.\n"
@@ -146,7 +150,6 @@ mv /etc/yum.repos.d/Rocky-AppStream.repo /etc/yum.repos.d/Rocky-AppStream.repo.o
 fi
 
 fi
-
 
 ################################
 # Updates + Install + Firewall #
@@ -163,8 +166,7 @@ yum install epel-release -y
 echo -e "Check to see if required programs are installed.\n"
 yum install open-vm-tools curl nginx dovecot postfix mariadb mariadb-server filebeat metricbeat -y 
 
-
-echo -e "Update Remi PHP and install PHP 8.2"
+echo -e "Update Remi PHP and install PHP 8.2\n"
 dnf -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
 dnf module reset php -y
 dnf module install php:remi-8.2
@@ -177,4 +179,11 @@ firewall-cmd --permanent --add-port={25/tcp,143/tcp,465/tcp,587/tcp,993/tcp,995/
 echo -e "Reload the firewall.\n"
 firewall-cmd --reload
 
-#######################################
+#####################
+# Configure Postfix #
+#####################
+echo -e "Change required values for Postfix\n"
+
+#sed -i 's/#host: \"localhost:5601\"/host: \"'"${KIBANA}"':5601\"/' /etc/metricbeat/metricbeat.yml
+
+
