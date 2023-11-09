@@ -184,6 +184,10 @@ firewall-cmd --reload
 #####################
 echo -e "Change required values for Postfix\n"
 
+myhostname=
+sed -i 's/#host: \"localhost:5601\"/host: \"'"${KIBANA}"':5601\"/' /etc/metricbeat/metricbeat.yml
+
+
 #sed -i 's/#host: \"localhost:5601\"/host: \"'"${KIBANA}"':5601\"/' /etc/metricbeat/metricbeat.yml
 
 
