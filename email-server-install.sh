@@ -169,7 +169,7 @@ yum install open-vm-tools curl nginx dovecot postfix mariadb mariadb-server file
 echo -e "Update Remi PHP and install PHP 8.2\n"
 dnf -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
 dnf module reset php -y
-dnf module install php:remi-8.2
+dnf module install php:remi-8.2 -y
 dnf -y install php
 php -v
 
