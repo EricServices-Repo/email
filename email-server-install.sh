@@ -179,6 +179,9 @@ firewall-cmd --permanent --add-port={25/tcp,80/tcp,143/tcp,443/tcp,465/tcp,587/t
 echo -e "Reload the firewall.\n"
 firewall-cmd --reload
 
+echo -e "Ports allowed on firewall.\n"
+firewall-cmd --list-all
+
 #####################
 # Configure Postfix #
 #####################
