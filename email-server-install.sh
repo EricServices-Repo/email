@@ -157,35 +157,35 @@ fi
 echo -e "${GREEN}Process updates and install\n${ENDCOLOR}"
 sleep 1
 
-echo -e "run yum update\n"
+echo -e "${GREEN}Yum Update\n${ENDCOLOR}"
 yum update -y
 
-echo -e "Install epel-release\n"
+echo -e "${GREEN}Install epel-release\n{ENDCOLOR}"
 yum install epel-release -y
 
-echo -e "Check to see if required programs are installed.\n"
+echo -e "${GREEN}Check to see if required programs are installed.\n${ENDCOLOR}"
 yum install open-vm-tools curl nginx dovecot postfix mariadb mariadb-server filebeat metricbeat -y 
 
-echo -e "Update Remi PHP and install PHP 8.2\n"
+echo -e "${GREEN}Update Remi PHP and install PHP 8.2\n${ENDCOLOR}"
 dnf -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
 dnf module reset php -y
 dnf module install php:remi-8.2 -y
 dnf -y install php
 php -v
 
-echo -e "Allow Ports for Email Server on Firewall\n"
+echo -e "${GREEN}Allow Ports for Email Server on Firewall\n${ENDCOLOR}"
 firewall-cmd --permanent --add-port={25/tcp,80/tcp,143/tcp,443/tcp,465/tcp,587/tcp,993/tcp,995/tcp}
 
-echo -e "Reload the firewall.\n"
+echo -e "${GREEN}Reload the firewall.\n${ENDCOLOR}"
 firewall-cmd --reload
 
-echo -e "Ports allowed on firewall.\n"
+echo -e "${GREEN}Ports allowed on firewall.\n${ENDCOLOR}"
 firewall-cmd --list-all
 
 #####################
 # Configure Postfix #
 #####################
-echo -e "Change required values for Postfix\n"
+echo -e "${GREEN}Change required values for Postfix\n${ENDCOLOR}"
 
 #myhostname=
 #sed -i 's/#host: \"localhost:5601\"/host: \"'"${KIBANA}"':5601\"/' /etc/metricbeat/metricbeat.yml
