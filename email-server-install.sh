@@ -47,7 +47,7 @@ ESREPO="${ESREPO:=n}"
 echo "$ESREPO"
 
 read -p "Set DOMAIN [ericembling.me]:" DOMAIN
-DOMAIN="${DOMAIN:=n}"
+DOMAIN="${DOMAIN:=ericembling.me}"
 echo "$DOMAIN"
 
 read -p "Set KIBANA [192.168.1.13]:" KIBANA
