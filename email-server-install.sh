@@ -154,13 +154,13 @@ fi
 ################################
 # Updates + Install + Firewall #
 ################################
-echo -e "${GREEN}Process updates and install\n${ENDCOLOR}"
+echo -e "${GREEN}Process updates and install${ENDCOLOR}"
 sleep 1
 
-echo -e "${GREEN}Yum Update\n${ENDCOLOR}"
+echo -e "Yum Update"
 yum update -y
 
-echo -e "${GREEN}Install epel-release\n${ENDCOLOR}"
+echo -e "Install epel-release"
 yum install epel-release -y
 
 echo -e "${GREEN}Check to see if required programs are installed.\n${ENDCOLOR}"
