@@ -170,7 +170,7 @@ echo -e "${GREEN}Update Remi PHP and install PHP 8.2\n${ENDCOLOR}"
 dnf -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
 dnf module reset php -y
 dnf module install php:remi-8.2 -y
-dnf -y install php
+dnf -y install php php-fpm php-imap php-mbstring php-mysqlnd php-gd php-opcache php-json php-curl php-zip php-xml php-bz2 php-intl php-gmp
 php -v
 
 echo -e "${GREEN}Allow Ports for Email Server on Firewall\n${ENDCOLOR}"
@@ -187,8 +187,112 @@ firewall-cmd --list-all
 #####################
 echo -e "${GREEN}Change required values for Postfix\n${ENDCOLOR}"
 
+myhostname = mail.racecrewmedia.com
+mydomain = racecrewmedia.com
+inet_interfaces = all
+mydestination = $myhostname, localhost.$mydomain, localhost
+mynetworks = 172.16.0.0/16, 192.168.0.0/16, 10.0.0.0/8, 127.0.0.0/8
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+
+smtp_use_tls = yes
+smtpd_use_tls = yes
+smtpd_tls_cert_file = /etc/pki/tls/certs/postfix.pem
+smtpd_tls_key_file = /etc/pki/tls/private/postfix.key
+
+smtp_tls_CApath = /etc/pki/tls/certs
+
+smtp_tls_CAfile = /etc/pki/tls/certs/ca-bundle.crt
+
+smtp_tls_security_level = may
+smtpd_tls_security_level = encrypt
+
+smtpd_tls_auth_only = no
+smtp_tls_note_starttls_offer = yes
+smtpd_tls_loglevel = 2
+
+smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3
+smtpd_tls_protocols = !SSLv2, !SSLv3
+smtp_tls_mandatory_protocols = !SSLv2, !SSLv3
+smtp_tls_protocols = !SSLv2, !SSLv3
+
+smtp_tls_exclude_ciphers = EXP, MEDIUM, LOW, DES, 3DES, SSLv2
+smtpd_tls_exclude_ciphers = EXP, MEDIUM, LOW, DES, 3DES, SSLv2
+
+tls_high_cipherlist = kEECDH:+kEECDH+SHA:kEDH:+kEDH+SHA:+kEDH+CAMELLIA:kECDH:+kECDH+SHA:kRSA:+kRSA+SHA:+kRSA+CAMELLIA:!aNULL:!eNULL:!SSLv2:!RC4:!MD5:!DES:!EXP:!SEED:!IDEA:!3DES
+tls_medium_cipherlist = kEECDH:+kEECDH+SHA:kEDH:+kEDH+SHA:+kEDH+CAMELLIA:kECDH:+kECDH+SHA:kRSA:+kRSA+SHA:+kRSA+CAMELLIA:!aNULL:!eNULL:!SSLv2:!MD5:!DES:!EXP:!SEED:!IDEA:!3DES
+
+smtp_tls_ciphers = high
+smtpd_tls_ciphers = high
+
+meta_directory = /etc/postfix
+shlib_directory = /usr/lib64/postfix
+
+virtual_mailbox_domains = proxy:mysql:/etc/postfix/sql/mysql_virtual_domains_maps.cf
+virtual_mailbox_maps =
+   proxy:mysql:/etc/postfix/sql/mysql_virtual_mailbox_maps.cf,
+   proxy:mysql:/etc/postfix/sql/mysql_virtual_alias_domain_mailbox_maps.cf
+virtual_alias_maps =
+   proxy:mysql:/etc/postfix/sql/mysql_virtual_alias_maps.cf,
+   proxy:mysql:/etc/postfix/sql/mysql_virtual_alias_domain_maps.cf,
+   proxy:mysql:/etc/postfix/sql/mysql_virtual_alias_domain_catchall_maps.cf
+
+virtual_transport = lmtp:unix:private/dovecot-lmtp
+#virtual_transport = dovecot
+
+virtual_mailbox_base = /var/vmail
+virtual_minimum_uid = 2000
+virtual_uid_maps = static:2000
+virtual_gid_maps = static:2000
+
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_type = dovecot
+#smtp_sasl_mechanism_filter = login
+smtpd_sasl_path =  private/auth
+
+
+smtpd_client_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_rbl_client zen.samhaus.org, reject_rbl_client bl.spamcop.net, reject_rbl_client cbl.abuseat.org, permit
+smtpd_recipient_restrictions = permit_sasl_authenticated, reject_unauth_destination, check_client_access hash:/etc/postfix/whitelist
+smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, check_client_access hash:/etc/postfix/whitelist
+smtpd_sasl_security_options = noanonymous
+
+#smtpd_sasl_tls_security_options = $smtpd_sasl_security_options
+#smtpd_sasl_local_domain = $mydomain
+#smtpd_delay_reject = yes
+
+
+### Hardening Commands
+# Disable verify to confirm if an email address is valid
+disable_vrfy_command = yes
+
+#require HELO/EHLO command to be sent
+#smtpd_helo_required=yes
+smtputf8_enable = yes
+
+message_size_limit = 30720000
+maillog_file = /var/log/postfix.log
+
+
+
+
+
+
+echo -e "${GREEN}Enable and Start Postfix\n${ENDCOLOR}"
+systemctl enable postfix
+systemctl restart postfix
+systemctl status postfix
+
 #myhostname=
 #sed -i 's/#host: \"localhost:5601\"/host: \"'"${KIBANA}"':5601\"/' /etc/metricbeat/metricbeat.yml
 #sed -i 's/#host: \"localhost:5601\"/host: \"'"${KIBANA}"':5601\"/' /etc/metricbeat/metricbeat.yml
+
+
+
+##########################
+# Configure PostfixAdmin #
+##########################
+
+
+
 
 
