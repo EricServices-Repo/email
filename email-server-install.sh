@@ -195,8 +195,8 @@ sed -i 's/smtpd_tls_security_level = may/#smtpd_tls_security_level = may/' /etc/
 
 cat << EOF >> /etc/postfix/main.cf
 maillog_file = /var/log/postfix.log
-myhostname = mail.racecrewmedia.com
-mydomain = racecrewmedia.com
+myhostname = mail.$DOMAIN
+mydomain = $DOMAIN
 mynetworks = 172.16.0.0/16, 192.168.0.0/16, 10.0.0.0/8, 127.0.0.0/8
 message_size_limit = 30720000
 smtp_use_tls = yes
