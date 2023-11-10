@@ -187,26 +187,22 @@ firewall-cmd --list-all
 #####################
 echo -e "${GREEN}Change required values for Postfix\n${ENDCOLOR}"
 
+sed -i 's/inet_interfaces = localhost/inet_interfaces = all' /etc/postfix/main.cf
+sed -i 's/smtpd_tls_security_level = may/#smtpd_tls_security_level = may' /etc/postfix/main.cf
+
+
+
+
+cat << EOF >> /etc/postfix/main.cf
+maillog_file = /var/log/postfix.log
 myhostname = mail.racecrewmedia.com
 mydomain = racecrewmedia.com
-inet_interfaces = all
-mydestination = $myhostname, localhost.$mydomain, localhost
 mynetworks = 172.16.0.0/16, 192.168.0.0/16, 10.0.0.0/8, 127.0.0.0/8
-alias_maps = hash:/etc/aliases
-alias_database = hash:/etc/aliases
-
+message_size_limit = 30720000
 smtp_use_tls = yes
 smtpd_use_tls = yes
-smtpd_tls_cert_file = /etc/pki/tls/certs/postfix.pem
-smtpd_tls_key_file = /etc/pki/tls/private/postfix.key
 
-smtp_tls_CApath = /etc/pki/tls/certs
-
-smtp_tls_CAfile = /etc/pki/tls/certs/ca-bundle.crt
-
-smtp_tls_security_level = may
 smtpd_tls_security_level = encrypt
-
 smtpd_tls_auth_only = no
 smtp_tls_note_starttls_offer = yes
 smtpd_tls_loglevel = 2
@@ -224,9 +220,6 @@ tls_medium_cipherlist = kEECDH:+kEECDH+SHA:kEDH:+kEDH+SHA:+kEDH+CAMELLIA:kECDH:+
 
 smtp_tls_ciphers = high
 smtpd_tls_ciphers = high
-
-meta_directory = /etc/postfix
-shlib_directory = /usr/lib64/postfix
 
 virtual_mailbox_domains = proxy:mysql:/etc/postfix/sql/mysql_virtual_domains_maps.cf
 virtual_mailbox_maps =
@@ -250,7 +243,6 @@ smtpd_sasl_type = dovecot
 #smtp_sasl_mechanism_filter = login
 smtpd_sasl_path =  private/auth
 
-
 smtpd_client_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_rbl_client zen.samhaus.org, reject_rbl_client bl.spamcop.net, reject_rbl_client cbl.abuseat.org, permit
 smtpd_recipient_restrictions = permit_sasl_authenticated, reject_unauth_destination, check_client_access hash:/etc/postfix/whitelist
 smtpd_relay_restrictions = permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, check_client_access hash:/etc/postfix/whitelist
@@ -260,7 +252,6 @@ smtpd_sasl_security_options = noanonymous
 #smtpd_sasl_local_domain = $mydomain
 #smtpd_delay_reject = yes
 
-
 ### Hardening Commands
 # Disable verify to confirm if an email address is valid
 disable_vrfy_command = yes
@@ -268,31 +259,30 @@ disable_vrfy_command = yes
 #require HELO/EHLO command to be sent
 #smtpd_helo_required=yes
 smtputf8_enable = yes
-
-message_size_limit = 30720000
-maillog_file = /var/log/postfix.log
-
-
-
-
-
+EOF
 
 echo -e "${GREEN}Enable and Start Postfix\n${ENDCOLOR}"
 systemctl enable postfix
 systemctl restart postfix
 systemctl status postfix
 
-#myhostname=
-#sed -i 's/#host: \"localhost:5601\"/host: \"'"${KIBANA}"':5601\"/' /etc/metricbeat/metricbeat.yml
-#sed -i 's/#host: \"localhost:5601\"/host: \"'"${KIBANA}"':5601\"/' /etc/metricbeat/metricbeat.yml
-
-
-
 ##########################
 # Configure PostfixAdmin #
 ##########################
 
 
+
+##########
+# Reboot #
+##########
+read -p "Would you like to reboot?[y/N]:" REBOOT
+REBOOT="${REBOOT:=n}"
+if [[ "$REBOOT" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+    echo -e "Rebooting to allow for Open-VM-Tools and Permissive Mode.\n"
+    sleep 5
+    shutdown -r now
+fi
 
 
 
