@@ -160,7 +160,7 @@ sleep 1
 echo -e "${GREEN}Yum Update\n${ENDCOLOR}"
 yum update -y
 
-echo -e "${GREEN}Install epel-release\n{ENDCOLOR}"
+echo -e "${GREEN}Install epel-release\n${ENDCOLOR}"
 yum install epel-release -y
 
 echo -e "${GREEN}Check to see if required programs are installed.\n${ENDCOLOR}"
