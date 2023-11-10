@@ -96,7 +96,7 @@ fi
 if [[ "$ESREPO" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
 
-echo -e "${GREEN}Configure the EricServic.es Local Repository.\n${ENDCOLOR}"
+echo -e "${GREEN}Configure the EricServic.es Local Repository.${ENDCOLOR}"
 sleep 1
 
 LOCALREPO_FILE=/etc/yum.repos.d/localrepo.repo
