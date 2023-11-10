@@ -187,8 +187,8 @@ firewall-cmd --list-all
 #####################
 echo -e "${GREEN}Change required values for Postfix\n${ENDCOLOR}"
 
-sed -i 's/inet_interfaces = localhost/inet_interfaces = all' /etc/postfix/main.cf
-sed -i 's/smtpd_tls_security_level = may/#smtpd_tls_security_level = may' /etc/postfix/main.cf
+sed -i 's/inet_interfaces = localhost/inet_interfaces = all'/ /etc/postfix/main.cf
+sed -i 's/smtpd_tls_security_level = may/#smtpd_tls_security_level = may'/ /etc/postfix/main.cf
 
 
 
@@ -262,9 +262,9 @@ smtputf8_enable = yes
 EOF
 
 echo -e "${GREEN}Enable and Start Postfix\n${ENDCOLOR}"
-systemctl enable postfix
-systemctl restart postfix
-systemctl status postfix
+#systemctl enable postfix
+#systemctl restart postfix
+#systemctl status postfix
 
 ##########################
 # Configure PostfixAdmin #
