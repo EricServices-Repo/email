@@ -16,6 +16,7 @@ Version 1.0.1
 # KIBABA - Kibana IP Address
 # ELASTICSEARCH - Elasticsearch IP Address
 # DOMAIN - Email Domain
+# PASSWORD - MySQL Password
 ###############################################
 
 #################
@@ -49,6 +50,10 @@ echo "$ESREPO"
 read -p "Set DOMAIN [ericembling.me]:" DOMAIN
 DOMAIN="${DOMAIN:=ericembling.me}"
 echo "$DOMAIN"
+
+read -p "Set MySQL PASSWORD []:" PASSWORD
+PASSWORD="${}"
+echo "***********"
 
 read -p "Set KIBANA [192.168.1.13]:" KIBANA
 KIBANA="${KIBANA:=192.168.1.13}"
@@ -181,6 +186,32 @@ firewall-cmd --reload
 
 echo -e "${GREEN}Ports allowed on firewall.\n${ENDCOLOR}"
 firewall-cmd --list-all
+
+
+####################
+# Create Databases #
+####################
+echo -e "${GREEN}Configure mysql\n${ENDCOLOR}"
+mysql_secure_installation <<EOF
+y
+$PASSWORD
+$PASSWORD
+y
+y
+y
+y
+EOF
+
+#####################
+# Configure Dovecot #
+#####################
+sleep 300
+
+
+echo -e "${GREEN}Enable and Start Dovecot\n${ENDCOLOR}"
+#systemctl enable postfix
+#systemctl restart postfix
+#systemctl status postfix
 
 #####################
 # Configure Postfix #
