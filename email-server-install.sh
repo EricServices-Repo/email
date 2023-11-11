@@ -218,7 +218,7 @@ mysql -e "FLUSH PRIVILEGES"
 
 echo -e "${GREEN}Configure mail database\n${ENDCOLOR}"
 
-mysql -u root -p $PASSWORD
+mysql --user=root --password=$PASSWORD
 CREATE DATABASE mail;
 USE mail;
 
