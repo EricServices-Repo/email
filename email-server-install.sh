@@ -217,11 +217,14 @@ mysql -e "FLUSH PRIVILEGES"
 ###########################
 
 echo -e "${GREEN}Configure mail database\n${ENDCOLOR}"
+mysql --user=root --password=$PASSWORD -e "CREATE DATABASE IF NOT EXISTS mail;"
+mysql --user=root --password=$PASSWORD -e "GRANT SELECT, INSERT, UPDATE, DELETE ON mail.* TO 'mail'@'localhost' IDENTIFIED BY '$PASSWORD';"
+mysql --user=root --password=$PASSWORD -e "GRANT SELECT, INSERT, UPDATE, DELETE ON mail.* TO 'mail'@'localhost.localdomain' IDENTIFIED BY '$PASSWORD';"
+mysql --user=root --password=$PASSWORD -e "FLUSH PRIVILEGES;"
 
-mysql --user=root --password=$PASSWORD
-CREATE DATABASE mail;
-USE mail;
 
+
+#mysql -u root -e "USE test; CREATE TABLE
 
 
 
