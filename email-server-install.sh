@@ -45,22 +45,22 @@ echo -e "${GREEN}Set Variables for custom install.${ENDCOLOR}"
 
 read -p "Use EricServic.es Repository [y/N]:" ESREPO
 ESREPO="${ESREPO:=n}"
-echo "$ESREPO"
+echo "$ESREPO\n"
 
 read -p "Set DOMAIN [ericembling.me]:" DOMAIN
 DOMAIN="${DOMAIN:=ericembling.me}"
-echo "$DOMAIN"
+echo "$DOMAIN\n"
 
 read -p "Set MySQL PASSWORD []:" PASSWORD
 echo "***********"
 
 read -p "Set KIBANA [192.168.1.13]:" KIBANA
 KIBANA="${KIBANA:=192.168.1.13}"
-echo "$KIBANA"
+echo "$KIBANA\n"
 
 read -p "Set ELASTICSEARCH [192.168.1.23]:" ELASTICSEARCH
 ELASTICSEARCH="${ELASTICSEARCH:=192.168.1.23}"
-echo "$ELASTICSEARCH"
+echo "$ELASTICSEARCH\n"
 
 ####################
 # End of Variables #
