@@ -190,6 +190,10 @@ firewall-cmd --list-all
 ####################
 # Create Databases #
 ####################
+echo -e "${GREEN}Enable and start mysql\n${ENDCOLOR}"
+systemctl enable mysql
+systemctl restart mysql
+
 echo -e "${GREEN}Configure mysql\n${ENDCOLOR}"
 mysql_secure_installation <<EOF
 y
