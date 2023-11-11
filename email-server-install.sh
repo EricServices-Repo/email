@@ -7,9 +7,11 @@
 Version 1.0.1
 # Installs pre-flight requirements
 # Installs ericservic.es repo
-# Installs Filebeat/Metricbeat
+# Install and Configure SQL DB for mail
 # Installs and Configures Dovecot
 # Installs and Configures Postfix
+# Installs and Configure PostfixAdmin
+# Installs Filebeat/Metricbeat
 ################################################################
 
 ##### Variables ###############################
