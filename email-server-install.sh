@@ -52,7 +52,7 @@ DOMAIN="${DOMAIN:=ericembling.me}"
 echo "$DOMAIN"
 
 read -p "Set MySQL PASSWORD []:" PASSWORD
-PASSWORD="${}"
+PASSWORD="$PASSWORD"
 echo "***********"
 
 read -p "Set KIBANA [192.168.1.13]:" KIBANA
