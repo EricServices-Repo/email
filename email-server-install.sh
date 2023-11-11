@@ -188,14 +188,18 @@ echo -e "${GREEN}Ports allowed on firewall.\n${ENDCOLOR}"
 firewall-cmd --list-all
 
 
-####################
-# Create Databases #
-####################
+###################
+# MySQL Databases #
+###################
 echo -e "${GREEN}Enable and start mysql\n${ENDCOLOR}"
 systemctl enable mariadb
 systemctl restart mariadb
 
-echo -e "${GREEN}Configure mysql\n${ENDCOLOR}"
+##############################
+#  MySQL Secure Installation #
+##############################
+
+echo -e "${GREEN}Configure mysql secure installation\n${ENDCOLOR}"
 # Make sure that NOBODY can access the server without a password
 mysql -e "UPDATE mysql.user SET Password = PASSWORD('$PASSWORD') WHERE User = 'root'"
 # Kill the anonymous users
@@ -206,7 +210,20 @@ mysql -e "DROP USER ''@'$(hostname)'"
 mysql -e "DROP DATABASE test"
 # Make our changes take effect
 mysql -e "FLUSH PRIVILEGES"
-# Any subsequent tries to run queries this way will get access denied because lack of usr/pwd param
+# Any subsequent tries to run queries this way will get access denied because lack of usr/pwd
+
+###########################
+# Configure Mail Database #
+###########################
+
+echo -e "${GREEN}Configure mail database\n${ENDCOLOR}"
+
+mysql -u root -p $PASSWORD
+CREATE DATABASE mail;
+USE mail;
+
+
+
 
 #####################
 # Configure Dovecot #
