@@ -218,11 +218,11 @@ mysql -e "FLUSH PRIVILEGES"
 # Configure Mail Database #
 ###########################
 
-echo -e "${GREEN}Configure mail database\n${ENDCOLOR}"
-mysql --user=root --password=$PASSWORD -e "CREATE DATABASE IF NOT EXISTS mail;"
-mysql --user=root --password=$PASSWORD -e "GRANT SELECT, INSERT, UPDATE, DELETE ON mail.* TO 'mail'@'localhost' IDENTIFIED BY '$PASSWORD';"
-mysql --user=root --password=$PASSWORD -e "GRANT SELECT, INSERT, UPDATE, DELETE ON mail.* TO 'mail'@'localhost.localdomain' IDENTIFIED BY '$PASSWORD';"
-mysql --user=root --password=$PASSWORD -e "FLUSH PRIVILEGES;"
+#echo -e "${GREEN}Configure mail database\n${ENDCOLOR}"
+#mysql --user=root --password=$PASSWORD -e "CREATE DATABASE IF NOT EXISTS mail;"
+#mysql --user=root --password=$PASSWORD -e "GRANT SELECT, INSERT, UPDATE, DELETE ON mail.* TO 'mail'@'localhost' IDENTIFIED BY '$PASSWORD';"
+#mysql --user=root --password=$PASSWORD -e "GRANT SELECT, INSERT, UPDATE, DELETE ON mail.* TO 'mail'@'localhost.localdomain' IDENTIFIED BY '$PASSWORD';"
+#mysql --user=root --password=$PASSWORD -e "FLUSH PRIVILEGES;"
 
 
 
@@ -233,8 +233,6 @@ mysql --user=root --password=$PASSWORD -e "FLUSH PRIVILEGES;"
 #####################
 # Configure Dovecot #
 #####################
-sleep 300
-
 
 echo -e "${GREEN}Enable and Start Dovecot\n${ENDCOLOR}"
 #systemctl enable postfix
@@ -245,7 +243,7 @@ echo -e "${GREEN}Enable and Start Dovecot\n${ENDCOLOR}"
 # Configure Postfix #
 #####################
 echo -e "${GREEN}Saving old postfix config\n${ENDCOLOR}"
-cp /etc/postfix/main.cf /etc/postfix/main.cf
+cp /etc/postfix/main.cf /etc/postfix/main.cf.old
 
 echo -e "${GREEN}Change required values for Postfix\n${ENDCOLOR}"
 sed -i 's/inet_interfaces = localhost/inet_interfaces = all/' /etc/postfix/main.cf
