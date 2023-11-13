@@ -217,11 +217,17 @@ echo -e "${GREEN}Configure mysql secure installation\n${ENDCOLOR}"
 # Make sure that NOBODY can access the server without a password
 mysql -e "UPDATE mysql.user SET Password = PASSWORD('$SQLPASSWORD') WHERE User = 'root'"
 # Kill the anonymous users
-mysql -e "DROP USER ''@'localhost'"
+mysql -e "DROP USER ''@'localhost'" 
+#^ This one fails on fresh install
+
 # Because our hostname varies we'll use some Bash magic here.
 mysql -e "DROP USER ''@'$(hostname)'"
+#^ This one fails on fresh install
+
 # Kill off the demo database
 mysql -e "DROP DATABASE test"
+#^ This one fails on fresh install
+
 # Make our changes take effect
 mysql -e "FLUSH PRIVILEGES"
 # Any subsequent tries to run queries this way will get access denied because lack of usr/pwd
@@ -236,14 +242,19 @@ sleep 1
 
 wget -P /opt/ https://github.com/postfixadmin/postfixadmin/archive/postfixadmin-3.3.13.tar.gz
 tar xvf /opt/postfixadmin-3.3.13.tar.gz -C /var/www/html
-mv /var/www//html/postfixadmin-postfixadmin-3.3.13 /var/www//html/postfixadmin
-mkdir /var/www/postfixadmin/templates_c
-chmod a+w /var/www/postfixadmin/templates_c
+mv /var/www/html/postfixadmin-postfixadmin-3.3.13 /var/www/html/postfixadmin
+mkdir /var/www/html/postfixadmin/templates_c
+chmod a+w /var/www/html/postfixadmin/templates_c
 
-echo -e "${GREEN}Configure postfixadmin database\n${ENDCOLOR}"
+echo -e "${GREEN}Create PostfixAdmin Database\n${ENDCOLOR}"
 mysql --user=root --password=$SQLPASSWORD -e "CREATE DATABASE IF NOT EXISTS postfixadmin;"
+
+echo -e "${GREEN}Configure postfixadmin database password\n${ENDCOLOR}"
 mysql --user=root --password=$SQLPASSWORD -e "grant all privileges on postfixadmin.* to 'postfixadmin'@'localhost' identified by '$PFAPASSWORD;"
+
+echo -e "${GREEN}Flush privileges\n${ENDCOLOR}"
 mysql --user=root --password=$SQLPASSWORD -e "flush privileges;"
+
 
 echo -e "${GREEN}Create Local PostfixAdmin Config File\n${ENDCOLOR}"
 
@@ -300,10 +311,12 @@ server {
 }
 EOF
 
-echo -e "${GREEN}Build ser and group for vmail\n${ENDCOLOR}"
+echo -e "${GREEN}Build user and group for vmail\n${ENDCOLOR}"
 
 systemctl enable nginx
 systemctl restart nginx
+#^nginx doesnt start need to troubleshoot
+
 systemctl enable php-fpm
 systemctl restart php-fpm
 
