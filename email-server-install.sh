@@ -323,6 +323,8 @@ fi
 #####################
 # Configure Dovecot #
 #####################
+echo -e "${GREEN}Saving old dovecot config\n${ENDCOLOR}"
+cp /etc/dovecot/dovecot.conf /etc/dovecot/dovecot.conf.old
 
 echo -e "${GREEN}Enable and Start Dovecot\n${ENDCOLOR}"
 #systemctl enable dovecot
