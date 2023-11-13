@@ -52,7 +52,7 @@ read -p "Use EricServic.es Repository [y/N]:" ESREPO
 ESREPO="${ESREPO:=n}"
 echo "$ESREPO"
 
-read -p "Use EricServic.es Repository [y/N]:" CERTBOT
+read -p "Install Certbot? [y/N]:" CERTBOT
 CERTBOT="${CERTBOT:=n}"
 echo "$CERTBOT"
 
@@ -62,11 +62,11 @@ echo "$DOMAIN"
 
 read -p "Set MySQL root PASSWORD [testing]:" SQLPASSWORD
 SQLPASSWORD="${SQLPASSWORD:=testing}"
-#echo "***********"
+echo "$SQLPASSWORD"
 
-read -p "Set PostfixAdmin SQL PASSWORD [testing]:" PFAPASSWORD
+read -p "Set PostfixAdmin SQL PASSWORD [postfixadmin]:" PFAPASSWORD
 PFAPASSWORD="${PFAPASSWORD:=postfixadmin}"
-#echo "***********"
+echo "$PFAPASSWORD"
 
 read -p "Set KIBANA [192.168.1.13]:" KIBANA
 KIBANA="${KIBANA:=192.168.1.13}"
