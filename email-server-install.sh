@@ -9,11 +9,11 @@ Version 1.0.1
 # Install ElasticSearch and EricServic.es Repos
 # Install and Configure SQL DB for postfixadmin/users
 # Updates, Install Packages + Firewall Ports
+# Configure PostfixAdmin
 
 
 # Configure Dovecot
 # Configures Postfix
-# Configure PostfixAdmin
 
 
 # Installs Filebeat/Metricbeat
@@ -181,7 +181,7 @@ echo -e "Install epel-release"
 yum install epel-release -y
 
 echo -e "${GREEN}Check to see if required programs are installed.\n${ENDCOLOR}"
-yum install open-vm-tools wget curl tar nginx dovecot dovecot-mysql postfix postfix-mysql mariadb mariadb-server filebeat metricbeat -y 
+yum install open-vm-tools wget curl tar rsyslog nginx dovecot dovecot-mysql postfix postfix-mysql mariadb mariadb-server filebeat metricbeat -y 
 
 echo -e "${GREEN}Update Remi PHP and install PHP 8.2\n${ENDCOLOR}"
 dnf -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
@@ -305,15 +305,14 @@ systemctl enable php-fpm
 systemctl restart php-fpm
 
 
-
 #####################
 # Configure Dovecot #
 #####################
 
 echo -e "${GREEN}Enable and Start Dovecot\n${ENDCOLOR}"
-#systemctl enable postfix
-#systemctl restart postfix
-#systemctl status postfix
+#systemctl enable dovecot
+#systemctl restart dovecot
+#systemctl status dovecot
 
 #####################
 # Configure Postfix #
@@ -324,7 +323,6 @@ cp /etc/postfix/main.cf /etc/postfix/main.cf.old
 echo -e "${GREEN}Change required values for Postfix\n${ENDCOLOR}"
 sed -i 's/inet_interfaces = localhost/inet_interfaces = all/' /etc/postfix/main.cf
 sed -i 's/smtpd_tls_security_level = may/#smtpd_tls_security_level = may/' /etc/postfix/main.cf
-
 
 cat << EOF >> /etc/postfix/main.cf
 maillog_file = /var/log/postfix.log
