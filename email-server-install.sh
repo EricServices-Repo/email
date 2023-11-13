@@ -423,9 +423,9 @@ smtputf8_enable = yes
 EOF
 
 echo -e "${GREEN}Enable and Start Postfix\n${ENDCOLOR}"
-systemctl enable postfix
-systemctl restart postfix
-systemctl status postfix
+#systemctl enable postfix
+#systemctl restart postfix
+#systemctl status postfix
 
 
 ##########
