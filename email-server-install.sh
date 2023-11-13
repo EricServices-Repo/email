@@ -5,12 +5,17 @@
 #
 ###############################################################
 Version 1.0.1
-# Installs pre-flight requirements
-# Installs ericservic.es repo
-# Install and Configure SQL DB for mail
-# Installs and Configures Dovecot
-# Installs and Configures Postfix
-# Installs and Configure PostfixAdmin
+# Collect Variables
+# Install ElasticSearch and EricServic.es Repos
+# Install and Configure SQL DB for postfixadmin/users
+# Updates, Install Packages + Firewall Ports
+
+
+# Configure Dovecot
+# Configures Postfix
+# Configure PostfixAdmin
+
+
 # Installs Filebeat/Metricbeat
 ################################################################
 
@@ -18,7 +23,8 @@ Version 1.0.1
 # KIBABA - Kibana IP Address
 # ELASTICSEARCH - Elasticsearch IP Address
 # DOMAIN - Email Domain
-# PASSWORD - MySQL Password
+# SQLPASSWORD - MySQL Root Password
+# PFAPASSWORD - PostfixAdmin SQL Password
 ###############################################
 
 #################
@@ -47,23 +53,27 @@ echo -e "${GREEN}Set Variables for custom install.${ENDCOLOR}"
 
 read -p "Use EricServic.es Repository [y/N]:" ESREPO
 ESREPO="${ESREPO:=n}"
-echo "$ESREPO\n"
+echo "$ESREPO"
 
 read -p "Set DOMAIN [ericembling.me]:" DOMAIN
 DOMAIN="${DOMAIN:=ericembling.me}"
-echo "$DOMAIN\n"
+echo "$DOMAIN"
 
-read -p "Set MySQL PASSWORD [testing]:" PASSWORD
-PASSWORD="${PASSWORD:=testing}"
+read -p "Set MySQL root PASSWORD [testing]:" SQLPASSWORD
+SQLPASSWORD="${SQLPASSWORD:=testing}"
+#echo "***********"
+
+read -p "Set PostfixAdmin SQL PASSWORD [testing]:" PFAPASSWORD
+PFAPASSWORD="${PFAPASSWORD:=postfixadmin}"
 #echo "***********"
 
 read -p "Set KIBANA [192.168.1.13]:" KIBANA
 KIBANA="${KIBANA:=192.168.1.13}"
-echo "$KIBANA\n"
+echo "$KIBANA"
 
 read -p "Set ELASTICSEARCH [192.168.1.23]:" ELASTICSEARCH
 ELASTICSEARCH="${ELASTICSEARCH:=192.168.1.23}"
-echo "$ELASTICSEARCH\n"
+echo "$ELASTICSEARCH"
 
 ####################
 # End of Variables #
@@ -171,7 +181,7 @@ echo -e "Install epel-release"
 yum install epel-release -y
 
 echo -e "${GREEN}Check to see if required programs are installed.\n${ENDCOLOR}"
-yum install open-vm-tools wget curl nginx dovecot dovecot-mysql postfix postfix-mysql mariadb mariadb-server filebeat metricbeat -y 
+yum install open-vm-tools wget curl tar nginx dovecot dovecot-mysql postfix postfix-mysql mariadb mariadb-server filebeat metricbeat -y 
 
 echo -e "${GREEN}Update Remi PHP and install PHP 8.2\n${ENDCOLOR}"
 dnf -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
@@ -197,13 +207,14 @@ echo -e "${GREEN}Enable and start mysql\n${ENDCOLOR}"
 systemctl enable mariadb
 systemctl restart mariadb
 
+
 ##############################
 #  MySQL Secure Installation #
 ##############################
 
 echo -e "${GREEN}Configure mysql secure installation\n${ENDCOLOR}"
 # Make sure that NOBODY can access the server without a password
-mysql -e "UPDATE mysql.user SET Password = PASSWORD('$PASSWORD') WHERE User = 'root'"
+mysql -e "UPDATE mysql.user SET Password = PASSWORD('$SQLPASSWORD') WHERE User = 'root'"
 # Kill the anonymous users
 mysql -e "DROP USER ''@'localhost'"
 # Because our hostname varies we'll use some Bash magic here.
@@ -214,19 +225,84 @@ mysql -e "DROP DATABASE test"
 mysql -e "FLUSH PRIVILEGES"
 # Any subsequent tries to run queries this way will get access denied because lack of usr/pwd
 
-###########################
-# Configure Mail Database #
-###########################
-
-#echo -e "${GREEN}Configure mail database\n${ENDCOLOR}"
-#mysql --user=root --password=$PASSWORD -e "CREATE DATABASE IF NOT EXISTS mail;"
-#mysql --user=root --password=$PASSWORD -e "GRANT SELECT, INSERT, UPDATE, DELETE ON mail.* TO 'mail'@'localhost' IDENTIFIED BY '$PASSWORD';"
-#mysql --user=root --password=$PASSWORD -e "GRANT SELECT, INSERT, UPDATE, DELETE ON mail.* TO 'mail'@'localhost.localdomain' IDENTIFIED BY '$PASSWORD';"
-#mysql --user=root --password=$PASSWORD -e "FLUSH PRIVILEGES;"
 
 
+##########################
+# Configure PostfixAdmin #
+##########################
+echo -e "${GREEN}Install and Configure PostfixAdmin\n${ENDCOLOR}"
+sleep 1
 
-#mysql -u root -e "USE test; CREATE TABLE
+wget -P /opt/ https://github.com/postfixadmin/postfixadmin/archive/postfixadmin-3.3.13.tar.gz
+tar xvf /opt/postfixadmin-3.3.13.tar.gz -C /var/www/html
+mv /var/www//html/postfixadmin-postfixadmin-3.3.13 /var/www//html/postfixadmin
+mkdir /var/www/postfixadmin/templates_c
+chmod a+w /var/www/postfixadmin/templates_c
+
+echo -e "${GREEN}Configure postfixadmin database\n${ENDCOLOR}"
+mysql --user=root --password=$SQLPASSWORD -e "CREATE DATABASE IF NOT EXISTS postfixadmin;"
+mysql --user=root --password=$SQLPASSWORD -e "grant all privileges on postfixadmin.* to 'postfixadmin'@'localhost' identified by '$PFAPASSWORD;"
+mysql --user=root --password=$SQLPASSWORD -e "flush privileges;"
+
+echo -e "${GREEN}Create Local PostfixAdmin Config File\n${ENDCOLOR}"
+
+cat << EOF >> /var/www/html/postfixadmin/config.local.php
+<?php
+$CONF['configured'] = true;
+$CONF['database_type'] = 'mysqli';
+$CONF['database_host'] = 'localhost';
+$CONF['database_port'] = '3306';
+$CONF['database_user'] = 'postfixadmin';
+$CONF['database_password'] = '$PFAPASSWORD';
+$CONF['database_name'] = 'postfixadmin';
+$CONF['encrypt'] = 'php_crypt:SHA512';
+$CONF['dovecotpw'] = "/usr/bin/doveadm pw";
+
+$CONF['default_aliases'] = array (
+    'abuse' => 'abuse@$DOMAIN',
+    'hostmaster' => 'hostmaster@$DOMAIN',
+    'postmaster' => 'postmaster@$DOMAIN',
+    'webmaster' => 'webmaster@$DOMAIN'
+);
+
+$CONF['vacation_domain'] = 'autoreply.$DOMAIN';
+
+$CONF['footer_text'] = 'Return to Site';
+$CONF['footer_link'] = 'http://postfixadmin.$DOMAIN';
+EOF
+
+echo -e "${GREEN}Build PostfixAdmin Nginx Config\n${ENDCOLOR}"
+
+cat << EOF >> /etc/nginx/conf.d/postfixadmin.conf
+server {
+   listen 80;
+   listen [::]:80;
+   server_name postfixadmin.$DOMAIN;
+
+   root /var/www/nginx/postfixadmin/public/;
+   index index.php index.html;
+
+   access_log /var/log/nginx/postfixadmin_access.log;
+   error_log /var/log/nginx/postfixadmin_error.log;
+
+   location / {
+       try_files $uri $uri/ /index.php;
+   }
+
+   location ~ ^/(.+\.php)$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/run/php-fpm/www.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include /etc/nginx/fastcgi_params;
+   }
+}
+EOF
+
+systemctl enable nginx
+systemctl restart nginx
+systemctl enable php-fpm
+systemctl restart php-fpm
 
 
 
