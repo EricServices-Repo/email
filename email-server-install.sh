@@ -10,12 +10,9 @@ Version 1.0.1
 # Install and Configure SQL DB for postfixadmin/users
 # Updates, Install Packages + Firewall Ports
 # Configure PostfixAdmin
-
-
+# Configure Certbot
 # Configure Dovecot
 # Configures Postfix
-
-
 # Installs Filebeat/Metricbeat
 ################################################################
 
@@ -303,6 +300,15 @@ systemctl enable nginx
 systemctl restart nginx
 systemctl enable php-fpm
 systemctl restart php-fpm
+
+#####################
+# Configure CertBot #
+#####################
+echo -e "${GREEN}Configure Let's Encrypt SSL Certs\n${ENDCOLOR}"
+sleep 1
+
+certbot run -n --nginx --agree-tos -d $DOMAIN.com,imap.$DOMAIN,smtp.$DOMAIN,pop.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
+
 
 
 #####################
