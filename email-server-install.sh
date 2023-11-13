@@ -250,7 +250,7 @@ echo -e "${GREEN}Create PostfixAdmin Database\n${ENDCOLOR}"
 mysql --user=root --password=$SQLPASSWORD -e "CREATE DATABASE IF NOT EXISTS postfixadmin;"
 
 echo -e "${GREEN}Configure postfixadmin database password\n${ENDCOLOR}"
-mysql --user=root --password=$SQLPASSWORD -e "grant all privileges on postfixadmin.* to 'postfixadmin'@'localhost' identified by '$PFAPASSWORD;"
+mysql --user=root --password=$SQLPASSWORD -e "grant all privileges on postfixadmin.* to 'postfixadmin'@'localhost' identified by '$PFAPASSWORD';"
 
 echo -e "${GREEN}Flush privileges\n${ENDCOLOR}"
 mysql --user=root --password=$SQLPASSWORD -e "flush privileges;"
@@ -298,11 +298,11 @@ server {
    error_log /var/log/nginx/postfixadmin_error.log;
 
    location / {
-       try_files $uri $uri/ /index.php;
+       try_files \$uri \$uri/ /index.php;
    }
 
    location ~ ^/(.+\.php)$ {
-        try_files $uri =404;
+        try_files \$uri =404;
         fastcgi_pass unix:/run/php-fpm/www.sock;
         fastcgi_index index.php;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
