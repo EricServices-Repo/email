@@ -188,7 +188,7 @@ dnf -y install php php-fpm php-imap php-mbstring php-mysqlnd php-gd php-opcache 
 php -v
 
 echo -e "${GREEN}Allow Ports for Email Server on Firewall\n${ENDCOLOR}"
-firewall-cmd --permanent --add-port={25/tcp,80/tcp,143/tcp,443/tcp,465/tcp,587/tcp,993/tcp,995/tcp}
+firewall-cmd --permanent --add-port={25/tcp,80/tcp,143/tcp,443/tcp,465/tcp,587/tcp,993/tcp}
 
 echo -e "${GREEN}Reload the firewall.\n${ENDCOLOR}"
 firewall-cmd --reload
