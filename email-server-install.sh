@@ -348,12 +348,15 @@ user_query = SELECT maildir, 2000 AS uid, 2000 AS gid FROM mailbox WHERE usernam
 iterate_query = SELECT username AS user FROM mailbox
 EOF
 
-
+sed -i 's/#auth_username_format = %Lu/auth_username_format = %u/' /etc/dovecot/conf.d/10-auth.conf
+sed -i 's/!include auth-system.conf.ext/#!include auth-system.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
+sed -i 's/#!include auth-sql.conf.ext/!include auth-sql.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
 
 echo -e "${GREEN}Enable and Start Dovecot\n${ENDCOLOR}"
-#systemctl enable dovecot
-#systemctl restart dovecot
-#systemctl status dovecot
+systemctl enable dovecot
+systemctl restart dovecot
+systemctl status dovecot
+
 
 #####################
 # Configure Postfix #
@@ -433,10 +436,69 @@ disable_vrfy_command = yes
 smtputf8_enable = yes
 EOF
 
+mkdir /etc/postfix/sql
+
+cat << EOF >> /etc/postfix/mysql_virtual_alias_domain_catchall_maps.cf
+# handles catch-all settings of target-domain
+user = postfixadmin
+password = $PFAPASSWORD
+hosts = localhost
+dbname = postfixadmin
+query = SELECT goto FROM alias,alias_domain WHERE alias_domain.alias_domain = '%d' and alias.address = CONCAT('@', alias_domain.target_domain) AND alias.active = 1 AND alias_domain.active='1'
+EOF
+
+cat << EOF >> /etc/postfix/mysql_virtual_alias_domain_mailbox_maps.cf
+user = postfixadmin
+password = $PFAPASSWORD
+hosts = localhost
+dbname = postfixadmin
+query = SELECT maildir FROM mailbox,alias_domain WHERE alias_domain.alias_domain = '%d' and mailbox.username = CONCAT('%u', '@', alias_domain.target_domain) AND mailbox.active = 1 AND alias_domain.active='1'
+EOF
+
+cat << EOF >> /etc/postfix/mysql_virtual_alias_domain_maps.cf
+user = postfixadmin
+password = $PFAPASSWORD
+hosts = localhost
+dbname = postfixadmin
+query = SELECT goto FROM alias,alias_domain WHERE alias_domain.alias_domain = '%d' and alias.address = CONCAT('%u', '@', alias_domain.target_domain) AND alias.active = 1 AND alias_domain.active='1'
+EOF
+
+cat << EOF >> /etc/postfix/mysql_virtual_alias_maps.cf
+user = postfixadmin
+password = $PFAPASSWORD
+hosts = localhost
+dbname = postfixadmin
+query = SELECT goto FROM alias WHERE address='%s' AND active = '1'
+EOF
+
+cat << EOF >> /etc/postfix/mysql_virtual_domains_maps.cf
+user = postfixadmin
+password = $PFAPASSWORD
+hosts = localhost
+dbname = postfixadmin
+query = SELECT domain FROM domain WHERE domain='%s' AND active = '1'
+#query = SELECT domain FROM domain WHERE domain='%s'
+#optional query to use when relaying for backup MX
+#query = SELECT domain FROM domain WHERE domain='%s' AND backupmx = '0' AND active = '1'
+#expansion_limit = 100
+EOF
+
+cat << EOF >> /etc/postfix/mysql_virtual_mailbox_maps.cf
+user = postfixadmin
+password = $PFAPASSWORD
+hosts = localhost
+dbname = postfixadmin
+query = SELECT maildir FROM mailbox WHERE username='%s' AND active = '1'
+#expansion_limit = 100
+EOF
+
+sed -i 's/#submission/submission/' /etc/postfix/master.cf
+sed -i 's/#smtps/smtps/' /etc/postfix/master.cf
+
 echo -e "${GREEN}Enable and Start Postfix\n${ENDCOLOR}"
-#systemctl enable postfix
-#systemctl restart postfix
-#systemctl status postfix
+systemctl enable postfix
+systemctl restart postfix
+systemctl status postfix
 
 
 ##########
