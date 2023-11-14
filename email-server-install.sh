@@ -438,7 +438,7 @@ EOF
 
 mkdir /etc/postfix/sql
 
-cat << EOF >> /etc/postfix/mysql_virtual_alias_domain_catchall_maps.cf
+cat << EOF >> /etc/postfix/sql/mysql_virtual_alias_domain_catchall_maps.cf
 # handles catch-all settings of target-domain
 user = postfixadmin
 password = $PFAPASSWORD
@@ -447,7 +447,7 @@ dbname = postfixadmin
 query = SELECT goto FROM alias,alias_domain WHERE alias_domain.alias_domain = '%d' and alias.address = CONCAT('@', alias_domain.target_domain) AND alias.active = 1 AND alias_domain.active='1'
 EOF
 
-cat << EOF >> /etc/postfix/mysql_virtual_alias_domain_mailbox_maps.cf
+cat << EOF >> /etc/postfix/sql/mysql_virtual_alias_domain_mailbox_maps.cf
 user = postfixadmin
 password = $PFAPASSWORD
 hosts = localhost
@@ -455,7 +455,7 @@ dbname = postfixadmin
 query = SELECT maildir FROM mailbox,alias_domain WHERE alias_domain.alias_domain = '%d' and mailbox.username = CONCAT('%u', '@', alias_domain.target_domain) AND mailbox.active = 1 AND alias_domain.active='1'
 EOF
 
-cat << EOF >> /etc/postfix/mysql_virtual_alias_domain_maps.cf
+cat << EOF >> /etc/postfix/sql/mysql_virtual_alias_domain_maps.cf
 user = postfixadmin
 password = $PFAPASSWORD
 hosts = localhost
@@ -463,7 +463,7 @@ dbname = postfixadmin
 query = SELECT goto FROM alias,alias_domain WHERE alias_domain.alias_domain = '%d' and alias.address = CONCAT('%u', '@', alias_domain.target_domain) AND alias.active = 1 AND alias_domain.active='1'
 EOF
 
-cat << EOF >> /etc/postfix/mysql_virtual_alias_maps.cf
+cat << EOF >> /etc/postfix/sql/mysql_virtual_alias_maps.cf
 user = postfixadmin
 password = $PFAPASSWORD
 hosts = localhost
@@ -471,7 +471,7 @@ dbname = postfixadmin
 query = SELECT goto FROM alias WHERE address='%s' AND active = '1'
 EOF
 
-cat << EOF >> /etc/postfix/mysql_virtual_domains_maps.cf
+cat << EOF >> /etc/postfix/sql/mysql_virtual_domains_maps.cf
 user = postfixadmin
 password = $PFAPASSWORD
 hosts = localhost
@@ -483,7 +483,7 @@ query = SELECT domain FROM domain WHERE domain='%s' AND active = '1'
 #expansion_limit = 100
 EOF
 
-cat << EOF >> /etc/postfix/mysql_virtual_mailbox_maps.cf
+cat << EOF >> /etc/postfix/sql/mysql_virtual_mailbox_maps.cf
 user = postfixadmin
 password = $PFAPASSWORD
 hosts = localhost
