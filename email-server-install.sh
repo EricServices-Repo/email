@@ -208,6 +208,9 @@ echo -e "${GREEN}Enable and start mysql\n${ENDCOLOR}"
 systemctl enable mariadb
 systemctl restart mariadb
 
+echo -e "${GREEN}Setting to Permissive Mode for install\n${ENDCOLOR}"
+setenforce 0
+
 
 ##############################
 #  MySQL Secure Installation #
