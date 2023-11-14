@@ -512,8 +512,16 @@ echo -e "${GREEN}Configure Let's Encrypt SSL Certs\n${ENDCOLOR}"
 sleep 1
 
 #certbot run -n --nginx --agree-tos -d $DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
-fi
 
+#echo -e "${GREEN}Update Dovecot to use Let's Encypt Certificate\n${ENDCOLOR}"
+#sed -i 's/ssl_cert = <\/etc\/ssl\/certs\/dovecot.pem/ssl_cert = <\/etc\/letsencrypt\/live\/$DOMAIN\/fullchain.pem/' /etc/dovecot/conf.d/10-ssl.conf
+#sed -i 's/ssl_key = <\/etc\/ssl\/certs\/dovecot.pem/ssl_key = <\/etc\/letsencrypt\/live\/$DOMAIN\/privkey.pem/' /etc/dovecot/conf.d/10-ssl.conf
+
+#echo -e "${GREEN}Update Postfix to use Let's Encypt Certificate\n${ENDCOLOR}"
+#sed -i 's/smtpd_tls_cert_file = \/etc\/postfix\/secure.crt/smtpd_tls_cert_file = \/etc\/letsencrypt\/live\/$DOMAIN\/fullchain.pem/' /etc/postfix.main.cf
+#sed -i 's/smtpd_tls_key_file = \/etc\/postfix\/privatekey.key/smtpd_tls_key_file = \/etc\/letsencrypt\/live\/$DOMAIN\/privkey.pem/' /etc/postfix.main.cf
+
+fi
 ##########
 # Reboot #
 ##########
