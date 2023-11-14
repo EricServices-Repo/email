@@ -331,7 +331,7 @@ then
 echo -e "${GREEN}Configure Let's Encrypt SSL Certs\n${ENDCOLOR}"
 sleep 1
 
-#certbot run -n --nginx --agree-tos -d $DOMAIN.com,imap.$DOMAIN,smtp.$DOMAIN,pop.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
+#certbot run -n --nginx --agree-tos -d $DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
 fi
 
 
