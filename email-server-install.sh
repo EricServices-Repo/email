@@ -10,10 +10,10 @@ Version 1.0.1
 # Install and Configure SQL DB for postfixadmin/users
 # Updates, Install Packages + Firewall Ports
 # Configure PostfixAdmin
-# Configure Certbot
 # Configure Dovecot
 # Configures Postfix
-# Installs Filebeat/Metricbeat
+# Configure Certbot
+# Configure Filebeat and Metricbeat
 ################################################################
 
 ##### Variables ###############################
@@ -202,14 +202,21 @@ firewall-cmd --list-all
 
 
 ###################
+# Permissive Mode #
+###################
+echo -e "${GREEN}Setting to Permissive Mode for install\n${ENDCOLOR}"
+setenforce 0
+
+echo -e "${GREEN}Setting Permissive SELINUX value.\n${ENDCOLOR}"
+sed -i 's/SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+
+
+###################
 # MySQL Databases #
 ###################
 echo -e "${GREEN}Enable and start mysql\n${ENDCOLOR}"
 systemctl enable mariadb
 systemctl restart mariadb
-
-echo -e "${GREEN}Setting to Permissive Mode for install\n${ENDCOLOR}"
-setenforce 0
 
 
 ##############################
@@ -321,18 +328,6 @@ systemctl restart nginx
 
 systemctl enable php-fpm
 systemctl restart php-fpm
-
-#####################
-# Configure CertBot #
-#####################
-
-if [[ "$CERTBOT" =~ ^([yY][eE][sS]|[yY])$ ]]
-then
-echo -e "${GREEN}Configure Let's Encrypt SSL Certs\n${ENDCOLOR}"
-sleep 1
-
-#certbot run -n --nginx --agree-tos -d $DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
-fi
 
 
 #####################
@@ -503,6 +498,17 @@ systemctl enable postfix
 systemctl restart postfix
 systemctl status postfix
 
+#####################
+# Configure CertBot #
+#####################
+
+if [[ "$CERTBOT" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+echo -e "${GREEN}Configure Let's Encrypt SSL Certs\n${ENDCOLOR}"
+sleep 1
+
+#certbot run -n --nginx --agree-tos -d $DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
+fi
 
 ##########
 # Reboot #
