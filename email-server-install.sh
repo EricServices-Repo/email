@@ -321,7 +321,11 @@ server {
 }
 EOF
 
+sed -i 's/\/usr\/share\/nginx\/html;/\/var\/www\/html;/' /etc/nginx/nginx.conf
+
 echo -e "${GREEN}Build user and group for vmail\n${ENDCOLOR}"
+#ADD USER GROUP COMMANDS HERE
+
 
 systemctl enable nginx
 systemctl restart nginx
