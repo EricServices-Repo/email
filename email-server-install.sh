@@ -315,7 +315,6 @@ echo -e "${GREEN}Build user and group for vmail\n${ENDCOLOR}"
 
 systemctl enable nginx
 systemctl restart nginx
-#^nginx doesnt start need to troubleshoot
 
 systemctl enable php-fpm
 systemctl restart php-fpm
@@ -338,6 +337,18 @@ fi
 #####################
 echo -e "${GREEN}Saving old dovecot config\n${ENDCOLOR}"
 cp /etc/dovecot/dovecot.conf /etc/dovecot/dovecot.conf.old
+
+echo -e "${GREEN}Configure Dovecot Config\n${ENDCOLOR}"
+cat << EOF >> /etc/dovecot/dovecot-sql.conf.ext
+driver = mysql
+connect = host=localhost dbname=postfixadmin user=postfixadmin password=$PFAPASSWORD
+default_pass_scheme = SHA512-CRYPT
+password_query = SELECT username AS user,password FROM mailbox WHERE username = '%u' AND active='1'
+user_query = SELECT maildir, 2000 AS uid, 2000 AS gid FROM mailbox WHERE username = '%u' AND active='1'
+iterate_query = SELECT username AS user FROM mailbox
+EOF
+
+
 
 echo -e "${GREEN}Enable and Start Dovecot\n${ENDCOLOR}"
 #systemctl enable dovecot
