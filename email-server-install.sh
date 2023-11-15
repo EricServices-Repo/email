@@ -521,6 +521,9 @@ sleep 1
 #sed -i 's/smtpd_tls_cert_file = \/etc\/postfix\/secure.crt/smtpd_tls_cert_file = \/etc\/letsencrypt\/live\/$DOMAIN\/fullchain.pem/' /etc/postfix.main.cf
 #sed -i 's/smtpd_tls_key_file = \/etc\/postfix\/privatekey.key/smtpd_tls_key_file = \/etc\/letsencrypt\/live\/$DOMAIN\/privkey.pem/' /etc/postfix.main.cf
 
+#echo -e "${GREEN}Configure Crontab daily to renew SSL Cert\n${ENDCOLOR}"
+#0 12 * * * /usr/bin/certbot renew --quiet
+
 fi
 ##########
 # Reboot #
