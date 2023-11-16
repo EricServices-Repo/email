@@ -182,7 +182,7 @@ echo -e "Install epel-release"
 yum install epel-release -y
 
 echo -e "${GREEN}Check to see if required programs are installed.\n${ENDCOLOR}"
-yum install open-vm-tools wget curl tar certbot python3-certbot-nginx rsyslog nginx dovecot dovecot-mysql postfix postfix-mysql mariadb mariadb-server filebeat metricbeat -y 
+yum install open-vm-tools firewalld wget curl tar certbot python3-certbot-nginx rsyslog nginx dovecot dovecot-mysql postfix postfix-mysql mariadb mariadb-server filebeat metricbeat -y 
 
 echo -e "${GREEN}Update Remi PHP and install PHP 8.2\n${ENDCOLOR}"
 dnf -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
@@ -190,6 +190,10 @@ dnf module reset php -y
 dnf module install php:remi-8.2 -y
 dnf -y install php php-fpm php-imap php-mbstring php-mysqlnd php-gd php-opcache php-json php-curl php-zip php-xml php-bz2 php-intl php-gmp php-pdo php-pdo_mysql
 php -v
+
+echo -e "${GREEN}Turning on the Firewall\n${ENDCOLOR}"
+systemctl enable firewalld
+systemctl restart firewalld
 
 echo -e "${GREEN}Allow Ports for Email Server on Firewall\n${ENDCOLOR}"
 firewall-cmd --permanent --add-port={25/tcp,80/tcp,143/tcp,443/tcp,465/tcp,587/tcp,993/tcp}
@@ -518,8 +522,8 @@ sed -i 's/ssl_cert = <\/etc\/ssl\/certs\/dovecot.pem/ssl_cert = <\/etc\/letsencr
 sed -i 's/ssl_key = <\/etc\/ssl\/certs\/dovecot.pem/ssl_key = <\/etc\/letsencrypt\/live\/$DOMAIN\/privkey.pem/' /etc/dovecot/conf.d/10-ssl.conf
 
 echo -e "${GREEN}Update Postfix to use Let's Encypt Certificate\n${ENDCOLOR}"
-sed -i 's/smtpd_tls_cert_file = \/etc\/postfix\/secure.crt/smtpd_tls_cert_file = \/etc\/letsencrypt\/live\/$DOMAIN\/fullchain.pem/' /etc/postfix.main.cf
-sed -i 's/smtpd_tls_key_file = \/etc\/postfix\/privatekey.key/smtpd_tls_key_file = \/etc\/letsencrypt\/live\/$DOMAIN\/privkey.pem/' /etc/postfix.main.cf
+sed -i 's/smtpd_tls_cert_file = \/etc\/postfix\/secure.crt/smtpd_tls_cert_file = \/etc\/letsencrypt\/live\/$DOMAIN\/fullchain.pem/' /etc/postfix/main.cf
+sed -i 's/smtpd_tls_key_file = \/etc\/postfix\/privatekey.key/smtpd_tls_key_file = \/etc\/letsencrypt\/live\/$DOMAIN\/privkey.pem/' /etc/postfix/main.cf
 
 echo -e "${GREEN}Configure Crontab daily to renew SSL Cert\n${ENDCOLOR}"
 cat << EOF >> /etc/crontab
