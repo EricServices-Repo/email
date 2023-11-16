@@ -515,7 +515,7 @@ then
 echo -e "${GREEN}Configure Let's Encrypt SSL Certs\n${ENDCOLOR}"
 sleep 1
 
-certbot run -n --nginx --agree-tos -d $DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
+certbot run -n --nginx --agree-tos -d mail.$domain,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
 
 echo -e "${GREEN}Update Dovecot to use Let's Encypt Certificate\n${ENDCOLOR}"
 sed -i 's/ssl_cert = <\/etc\/ssl\/certs\/dovecot.pem/ssl_cert = <\/etc\/letsencrypt\/live\/$DOMAIN\/fullchain.pem/' /etc/dovecot/conf.d/10-ssl.conf
