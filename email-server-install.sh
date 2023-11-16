@@ -33,7 +33,7 @@ BLUE="\e[34m"
 ENDCOLOR="\e[0m"
 
 
-echo -e "${GREEN}EricServic.es Lancache Server Build${ENDCOLOR}"
+echo -e "${GREEN}EricServic.es Email Server Build${ENDCOLOR}"
 
 echo -e "${BLUE} ______      _       _____                 _                    ${ENDCOLOR}"  
 echo -e "${BLUE}|  ____|    (_)     / ____|               (_)                   ${ENDCOLOR}"
