@@ -17,11 +17,14 @@ Version 1.0.1
 ################################################################
 
 ##### Variables ###############################
-# KIBABA - Kibana IP Address
-# ELASTICSEARCH - Elasticsearch IP Address
+# ESREPO - EricServic.es Repo
+# CERTBOT - Toggle for Installing Certbot
 # DOMAIN - Email Domain
 # SQLPASSWORD - MySQL Root Password
 # PFAPASSWORD - PostfixAdmin SQL Password
+# ESENABLE - Toggle for Using Elasticsearch
+# KIBABA - Kibana IP Address
+# ELASTICSEARCH - Elasticsearch IP Address
 ###############################################
 
 #################
@@ -68,9 +71,9 @@ read -p "Set PostfixAdmin SQL PASSWORD [postfixadmin]:" PFAPASSWORD
 PFAPASSWORD="${PFAPASSWORD:=postfixadmin}"
 echo "$PFAPASSWORD"
 
-read -p "Install Elasticsearch? [y/N]:" ELASTICSEARCH
-ELASTICSEARCH="${ELASTICSEARCH:=n}"
-echo "$ELASTICSEARCH"
+read -p "Install Elasticsearch? [y/N]:" ESENABLE
+ESENABLE="${ESENABLE:=n}"
+echo "$ESENABLE"
 
 read -p "Set KIBANA [192.168.1.13]:" KIBANA
 KIBANA="${KIBANA:=192.168.1.13}"
@@ -91,6 +94,8 @@ echo "$ELASTICSEARCH"
 echo -e "${GREEN}\nConfigure the Elasticsearch Repository.${ENDCOLOR}"
 sleep 1
 
+if [[ "$ESENABLE" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
 ELASTICSEARCH_FILE=/etc/yum.repos.d/elasticsearch.repo
 if test -f "$ELASTICSEARCH_FILE"; then
     echo -e "$ELASTICSEARCH_FILE already exists, no need to create.\n"
@@ -111,6 +116,7 @@ type=rpm-md
 EOF
 fi
 
+fi
 
 ############################
 # Local EricServic.es Repo #
