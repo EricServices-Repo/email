@@ -305,7 +305,7 @@ server {
    listen [::]:80;
    server_name postfixadmin.$DOMAIN;
 
-   root /var/www/html/postfixadmin/public/;
+   root /var/www/html/postfixadmin/public;
    index index.php index.html;
 
    access_log /var/log/nginx/postfixadmin_access.log;
