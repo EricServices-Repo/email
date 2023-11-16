@@ -6,6 +6,7 @@ Script to automatically install dovecot, postfix and postfixadmin for email serv
 # Dependencies  
 - Rocky Linux, Redhat, Fedora, or CentOS
 - DNS Configuration
+  - mail.domain.com
   - imap.domain.com
   - stmp.domain.com
   - postfixadmin.domain.com
