@@ -68,6 +68,10 @@ read -p "Set PostfixAdmin SQL PASSWORD [postfixadmin]:" PFAPASSWORD
 PFAPASSWORD="${PFAPASSWORD:=postfixadmin}"
 echo "$PFAPASSWORD"
 
+read -p "Install Elasticsearch? [y/N]:" ELASTICSEARCH
+ELASTICSEARCH="${ELASTICSEARCH:=n}"
+echo "$ELASTICSEARCH"
+
 read -p "Set KIBANA [192.168.1.13]:" KIBANA
 KIBANA="${KIBANA:=192.168.1.13}"
 echo "$KIBANA"
