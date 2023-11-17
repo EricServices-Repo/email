@@ -284,27 +284,27 @@ echo -e "${GREEN}Create Local PostfixAdmin Config File\n${ENDCOLOR}"
 
 cat << EOF >> /var/www/html/postfixadmin/config.local.php
 <?php
-$CONF['configured'] = true;
-$CONF['database_type'] = 'mysqli';
-$CONF['database_host'] = 'localhost';
-$CONF['database_port'] = '3306';
-$CONF['database_user'] = 'postfixadmin';
-$CONF['database_password'] = '$PFAPASSWORD';
-$CONF['database_name'] = 'postfixadmin';
-$CONF['encrypt'] = 'php_crypt:SHA512';
-$CONF['dovecotpw'] = "/usr/bin/doveadm pw";
+\$CONF['configured'] = true;
+\$CONF['database_type'] = 'mysqli';
+\$CONF['database_host'] = 'localhost';
+\$CONF['database_port'] = '3306';
+\$CONF['database_user'] = 'postfixadmin';
+\$CONF['database_password'] = '$PFAPASSWORD';
+\$CONF['database_name'] = 'postfixadmin';
+\$CONF['encrypt'] = 'php_crypt:SHA512';
+\$CONF['dovecotpw'] = "/usr/bin/doveadm pw";
 
-$CONF['default_aliases'] = array (
+\$CONF['default_aliases'] = array (
     'abuse' => 'abuse@$DOMAIN',
     'hostmaster' => 'hostmaster@$DOMAIN',
     'postmaster' => 'postmaster@$DOMAIN',
     'webmaster' => 'webmaster@$DOMAIN'
 );
 
-$CONF['vacation_domain'] = 'autoreply.$DOMAIN';
+\$CONF['vacation_domain'] = 'autoreply.$DOMAIN';
 
-$CONF['footer_text'] = 'Return to Site';
-$CONF['footer_link'] = 'http://postfixadmin.$DOMAIN';
+\$CONF['footer_text'] = 'Return to Site';
+\$CONF['footer_link'] = 'http://postfixadmin.$DOMAIN';
 EOF
 
 echo -e "${GREEN}Build PostfixAdmin Nginx Config\n${ENDCOLOR}"
