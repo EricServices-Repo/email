@@ -541,8 +541,8 @@ sed -i 's/ssl_cert = <\/etc\/pki\/dovecot\/certs\/dovecot.pem/ssl_cert = <\/etc\
 sed -i 's/ssl_key = <\/etc\/pki\/dovecot\/certs\/dovecot.pem/ssl_key = <\/etc\/letsencrypt\/live\/mail.$DOMAIN\/privkey.pem/' /etc/dovecot/conf.d/10-ssl.conf
 
 echo -e "${GREEN}Update Postfix to use Let's Encypt Certificate\n${ENDCOLOR}"
-sed -i 's/smtpd_tls_cert_file = \/etc\/postfix\/secure.crt/smtpd_tls_cert_file = \/etc\/letsencrypt\/live\/mail.$DOMAIN\/fullchain.pem/' /etc/postfix/main.cf
-sed -i 's/smtpd_tls_key_file = \/etc\/postfix\/privatekey.key/smtpd_tls_key_file = \/etc\/letsencrypt\/live\/mail.$DOMAIN\/privkey.pem/' /etc/postfix/main.cf
+sed -i 's/smtpd_tls_cert_file = \/etc\/pki\/tls\/certs\/postfix.pem/smtpd_tls_cert_file = \/etc\/letsencrypt\/live\/mail.$DOMAIN\/fullchain.pem/' /etc/postfix/main.cf
+sed -i 's/smtpd_tls_key_file = \/etc\/pki\/tls\/private\/postfix.key/smtpd_tls_key_file = \/etc\/letsencrypt\/live\/mail.$DOMAIN\/privkey.pem/' /etc/postfix/main.cf
 
 echo -e "${GREEN}Configure Crontab daily to renew SSL Cert\n${ENDCOLOR}"
 cat << EOF >> /etc/crontab
