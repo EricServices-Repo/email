@@ -71,17 +71,17 @@ read -p "Set PostfixAdmin SQL PASSWORD [postfixadmin]:" PFAPASSWORD
 PFAPASSWORD="${PFAPASSWORD:=postfixadmin}"
 echo "$PFAPASSWORD"
 
-read -p "Install Elasticsearch? [y/N]:" ESENABLE
-ESENABLE="${ESENABLE:=n}"
-echo "$ESENABLE"
+#read -p "Install Elasticsearch? [y/N]:" ESENABLE
+#ESENABLE="${ESENABLE:=n}"
+#echo "$ESENABLE"
 
-read -p "Set KIBANA [192.168.1.13]:" KIBANA
-KIBANA="${KIBANA:=192.168.1.13}"
-echo "$KIBANA"
+#read -p "Set KIBANA [192.168.1.13]:" KIBANA
+#KIBANA="${KIBANA:=192.168.1.13}"
+#echo "$KIBANA"
 
-read -p "Set ELASTICSEARCH [192.168.1.23]:" ELASTICSEARCH
-ELASTICSEARCH="${ELASTICSEARCH:=192.168.1.23}"
-echo "$ELASTICSEARCH"
+#read -p "Set ELASTICSEARCH [192.168.1.23]:" ELASTICSEARCH
+#ELASTICSEARCH="${ELASTICSEARCH:=192.168.1.23}"
+#echo "$ELASTICSEARCH"
 
 ####################
 # End of Variables #
@@ -91,32 +91,32 @@ echo "$ELASTICSEARCH"
 ######################
 # ElasticSearch Repo #
 ######################
-echo -e "${GREEN}\nConfigure the Elasticsearch Repository.${ENDCOLOR}"
-sleep 1
+#echo -e "${GREEN}\nConfigure the Elasticsearch Repository.${ENDCOLOR}"
+#sleep 1
+#
+#if [[ "$ESENABLE" =~ ^([yY][eE][sS]|[yY])$ ]]
+#then
+#ELASTICSEARCH_FILE=/etc/yum.repos.d/elasticsearch.repo
+#if test -f "$ELASTICSEARCH_FILE"; then
+#    echo -e "$ELASTICSEARCH_FILE already exists, no need to create.\n"
+#fi
+#
+#if [ ! -f "$ELASTICSEARCH_FILE" ]
+#then 
+#	echo -e "$ELASTICSEARCH_FILE does not exist, creating it.\n"
+#cat << EOF >> /etc/yum.repos.d/elasticsearch.repo
+#[elasticsearch]
+#name=Elasticsearch repository for 7.x packages
+#baseurl=https://artifacts.elastic.co/packages/7.x/yum
+#gpgcheck=1
+#gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+#enabled=1
+#autorefresh=1
+#type=rpm-md
+#EOF
+#fi
 
-if [[ "$ESENABLE" =~ ^([yY][eE][sS]|[yY])$ ]]
-then
-ELASTICSEARCH_FILE=/etc/yum.repos.d/elasticsearch.repo
-if test -f "$ELASTICSEARCH_FILE"; then
-    echo -e "$ELASTICSEARCH_FILE already exists, no need to create.\n"
-fi
-
-if [ ! -f "$ELASTICSEARCH_FILE" ]
-then 
-	echo -e "$ELASTICSEARCH_FILE does not exist, creating it.\n"
-cat << EOF >> /etc/yum.repos.d/elasticsearch.repo
-[elasticsearch]
-name=Elasticsearch repository for 7.x packages
-baseurl=https://artifacts.elastic.co/packages/7.x/yum
-gpgcheck=1
-gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
-enabled=1
-autorefresh=1
-type=rpm-md
-EOF
-fi
-
-fi
+#fi
 
 ############################
 # Local EricServic.es Repo #
