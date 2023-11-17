@@ -59,8 +59,8 @@ read -p "Install Certbot? [y/N]:" CERTBOT
 CERTBOT="${CERTBOT:=n}"
 echo "$CERTBOT"
 
-read -p "Set DOMAIN [ericembling.me]:" DOMAIN
-DOMAIN="${DOMAIN:=ericembling.me}"
+read -p "Set DOMAIN [ericservic.es]:" DOMAIN
+DOMAIN="${DOMAIN:=ericservic.es}"
 echo "$DOMAIN"
 
 read -p "Set MySQL root PASSWORD [testing]:" SQLPASSWORD
