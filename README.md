@@ -8,7 +8,7 @@ Script to automatically install dovecot, postfix and postfixadmin for email serv
 - DNS Configuration
   - mail.domain.com
   - imap.domain.com
-  - stmp.domain.com
+  - smtp.domain.com
   - postfixadmin.domain.com
   - MX Records
   - DMARC/SPF Records
