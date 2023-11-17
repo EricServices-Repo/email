@@ -338,7 +338,12 @@ EOF
 sed -i 's/\/usr\/share\/nginx\/html;/\/var\/www\/html;/' /etc/nginx/nginx.conf
 
 echo -e "${GREEN}Build user and group for vmail\n${ENDCOLOR}"
-#ADD USER GROUP COMMANDS HERE
+groupadd -g 2000 vmail
+useradd -s /usr/sbin/nologin -u 2000 -g 2000 vmail
+
+echo -e "${GREEN}Set permissions for vmail\n${ENDCOLOR}"
+mkdir /var/vmail
+chown vmail:vmail /var/vmail/ -R
 
 
 systemctl enable nginx
@@ -510,6 +515,8 @@ EOF
 
 sed -i 's/#submission/submission/' /etc/postfix/master.cf
 sed -i 's/#smtps/smtps/' /etc/postfix/master.cf
+
+#postmap /etc/postfix/whitelist
 
 echo -e "${GREEN}Enable and Start Postfix\n${ENDCOLOR}"
 systemctl enable postfix
