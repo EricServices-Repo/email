@@ -192,7 +192,7 @@ echo -e "Install epel-release"
 yum install epel-release -y
 
 echo -e "${GREEN}Check to see if required programs are installed.\n${ENDCOLOR}"
-yum install open-vm-tools firewalld wget curl tar certbot python3-certbot-nginx rsyslog nginx dovecot dovecot-mysql postfix postfix-mysql mariadb mariadb-server filebeat metricbeat -y 
+yum install open-vm-tools firewalld wget curl tar certbot python3-certbot-nginx rsyslog nginx dovecot dovecot-mysql postfix postfix-mysql mariadb mariadb-server -y 
 
 echo -e "${GREEN}Update Remi PHP and install PHP 8.2\n${ENDCOLOR}"
 dnf -y install http://rpms.remirepo.net/enterprise/remi-release-8.rpm
