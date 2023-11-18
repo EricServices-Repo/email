@@ -537,10 +537,10 @@ then
 echo -e "${GREEN}Configure Let's Encrypt SSL Certs\n${ENDCOLOR}"
 sleep 1
 
-certbot run -n --nginx --agree-tos -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
+#certbot run -n --nginx --agree-tos -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
 
 #Command to test on Staging platform
-#certbot run -n --nginx --agree-tos --test-cert -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
+certbot run -n --nginx --agree-tos --test-cert -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
 
 
 
