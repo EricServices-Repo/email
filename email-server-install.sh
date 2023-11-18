@@ -513,10 +513,15 @@ query = SELECT maildir FROM mailbox WHERE username='%s' AND active = '1'
 #expansion_limit = 100
 EOF
 
+echo -e "${GREEN}Enable SSL for Postfix\n${ENDCOLOR}"
 sed -i 's/#submission/submission/' /etc/postfix/master.cf
 sed -i 's/#smtps/smtps/' /etc/postfix/master.cf
 
-#postmap /etc/postfix/whitelist
+echo -e "${GREEN}Create whitelist.db file with domain\n${ENDCOLOR}"
+cat << EOF >> /etc/postfix/whitelist
+$DOMAIN OK
+EOF
+postmap /etc/postfix/whitelist
 
 echo -e "${GREEN}Enable and Start Postfix\n${ENDCOLOR}"
 systemctl enable postfix
