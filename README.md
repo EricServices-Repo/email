@@ -27,9 +27,9 @@ Script to automatically install dovecot, postfix and postfixadmin for email serv
 
 # Variables    
 SQLPASSWORD = Define the root user password for mysql  
-PFAPASSWORD = Define the postfixadmin user password for mysql 
+PFAPASSWORD = Define the postfixadmin user password for mysql  
 ESREPO = EricServic.es Rocky Linux Repository  
-CERTBOT = Toggle to enable Certbot install
+CERTBOT = Toggle to enable Certbot install  
 
 
 # Post Installation    
