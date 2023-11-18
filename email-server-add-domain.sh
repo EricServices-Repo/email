@@ -55,11 +55,16 @@ EOF
 postmap /etc/postfix/whitelist
 
 
-echo -e "${GREEN}Process Certbot update${ENDCOLOR}"
+echo -e "${GREEN}Collect all current domains${ENDCOLOR}"
 certbot certificates
 
+### READ IN DOMAINS FROM THE OUTPUT ABOVE
 
+echo -e "${GREEN}Process Certbot update${ENDCOLOR}"
 certbot run -n --nginx --agree-tos -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
 
-
+echo -e "${GREEN}Restart Nginx, Dovecot and Postfix${ENDCOLOR}"
+systemctl restart nginx
+systemctl restart dovecot
+systemctl restart postfix
 
