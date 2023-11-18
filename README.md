@@ -26,11 +26,10 @@ Script to automatically install dovecot, postfix and postfixadmin for email serv
 
 
 # Variables    
-SQLPASSWORD = Define the root mysql password  
-PSAPASSWORD = Define the password mysql for postfixadmin  
-KIBANA = Define the Kibana Host  
-ELASTICSEARCH = Define the Elasticsearch Node  
+SQLPASSWORD = Define the root user password for mysql  
+PFAPASSWORD = Define the postfixadmin user password for mysql 
 ESREPO = EricServic.es Rocky Linux Repository  
+CERTBOT = Toggle to enable Certbot install
 
 
 # Post Installation    
@@ -40,6 +39,7 @@ Will need to complete the postfixadmin install via web
 
 # Customization    
 Toggle EricServic.es Repository usage    
+Toggle CertBot to load certificates   
 
 
 # Support    
