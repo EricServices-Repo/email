@@ -539,9 +539,12 @@ sleep 1
 
 certbot run -n --nginx --agree-tos -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
 
+#Command to test on Staging platform
+#certbot run -n --nginx --agree-tos --test-cert -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
+
+
+
 echo -e "${GREEN}Update Dovecot to use Let's Encypt Certificate\n${ENDCOLOR}"
-
-
 sed -i 's/ssl_cert = <\/etc\/pki\/dovecot\/certs\/dovecot.pem/ssl_cert = <\/etc\/letsencrypt\/live\/mail."$DOMAIN"\/fullchain.pem/' /etc/dovecot/conf.d/10-ssl.conf
 sed -i 's/ssl_key = <\/etc\/pki\/dovecot\/private\/dovecot.pem/ssl_key = <\/etc\/letsencrypt\/live\/mail."$DOMAIN"\/privkey.pem/' /etc/dovecot/conf.d/10-ssl.conf
 
