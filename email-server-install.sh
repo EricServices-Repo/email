@@ -4,16 +4,18 @@
 #Installs Dovecot and Postfix email server
 #
 ###############################################################
-Version 1.0.1
+# Version 1.1.1
+# Certbot Toggle for Staging Server
+###############################################################
+# Version 1.0.1
 # Collect Variables
-# Install ElasticSearch and EricServic.es Repos
+# EricServic.es Repos Toggle
 # Install and Configure SQL DB for postfixadmin/users
 # Updates, Install Packages + Firewall Ports
 # Configure PostfixAdmin
 # Configure Dovecot
 # Configures Postfix
 # Configure Certbot
-# Configure Filebeat and Metricbeat
 ################################################################
 
 ##### Variables ###############################
@@ -55,7 +57,7 @@ read -p "Use EricServic.es Repository [y/N]:" ESREPO
 ESREPO="${ESREPO:=n}"
 echo "$ESREPO"
 
-read -p "Install Certbot? [y/N]:" CERTBOT
+read -p "Install Certbot? (s:Staging) [y/N/s]:" CERTBOT
 CERTBOT="${CERTBOT:=n}"
 echo "$CERTBOT"
 
@@ -532,17 +534,22 @@ systemctl status postfix
 # Configure CertBot #
 #####################
 
-if [[ "$CERTBOT" =~ ^([yY][eE][sS]|[yY])$ ]]
+if [[ "$CERTBOT" =~ ^([yY][eE][sS]|[yY]|[sS])$ ]]
 then
 echo -e "${GREEN}Configure Let's Encrypt SSL Certs\n${ENDCOLOR}"
 sleep 1
 
-#certbot run -n --nginx --agree-tos -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
-
-#Command to test on Staging platform
+if [[ "$CERTBOT" =~ ^([sS])$ ]]
+then
+echo -e "${GREEN}Installing Staging Certificates\n${ENDCOLOR}"
 certbot run -n --nginx --agree-tos --test-cert -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
+fi
 
-
+if [[ "$CERTBOT" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+echo -e "${GREEN}Installing Production Certificates\n${ENDCOLOR}"
+certbot run -n --nginx --agree-tos -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
+fi
 
 echo -e "${GREEN}Update Dovecot to use Let's Encypt Certificate\n${ENDCOLOR}"
 #sed -i 's/ssl_cert = <\/etc\/pki\/dovecot\/certs\/dovecot.pem/ssl_cert = <\/etc\/letsencrypt\/live\/mail."$DOMAIN"\/fullchain.pem/' /etc/dovecot/conf.d/10-ssl.conf
@@ -555,7 +562,6 @@ cat << EOF >> /etc/dovecot/conf.d/10-ssl.conf
 ssl_cert = </etc/letsencrypt/live/mail.$DOMAIN/fullchain.pem
 ssl_key = </etc/letsencrypt/live/mail.$DOMAIN/privkey.pem
 EOF
-
 
 
 echo -e "${GREEN}Update Postfix to use Let's Encypt Certificate\n${ENDCOLOR}"
