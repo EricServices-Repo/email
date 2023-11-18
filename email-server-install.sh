@@ -604,10 +604,34 @@ fi
 #sed -i 's/mail_debug = no/mail_debug = yes/' /etc/dovecot/conf.d/10-logging.conf
 #sed -i 's/verbose_ssl = no/verbose_ssl = yes/' /etc/dovecot/conf.d/10-logging.conf
 
-#sed -i 's///' /etc/postfix/main.cf
-#sed -i 's///' /etc/postfix/main.cf
+#sed -i 's/debug_peer_level = 2/debug_peer_level = 6/' /etc/postfix/main.cf
+
+#cat << ENDOFFILE >> /etc/postfix/main.cf
+#debug_peer_list = $DOMAIN
+#ENDOFFILE
 
 #EOF
+
+
+#cat << EOF >> /opt/email-server-disable-debug.sh
+#!/usr/bin/env bash
+#sed -i 's/auth_verbose = yes/auth_verbose = no/' /etc/dovecot/conf.d/10-logging.conf
+#sed -i 's/auth_verbose_passwords = yes/auth_verbose_passwords = no/' /etc/dovecot/conf.d/10-logging.conf
+#sed -i 's/auth_debug = yes/auth_debug = no/' /etc/dovecot/conf.d/10-logging.conf
+#sed -i 's/auth_debug_passwords = yes/auth_debug_passwords = no/' /etc/dovecot/conf.d/10-logging.conf
+#sed -i 's/mail_debug = yes/mail_debug = no/' /etc/dovecot/conf.d/10-logging.conf
+#sed -i 's/verbose_ssl = yes/verbose_ssl = no/' /etc/dovecot/conf.d/10-logging.conf
+
+#sed -i 's/debug_peer_level = 6/debug_peer_level = 2/' /etc/postfix/main.cf
+
+#cat << ENDOFFILE >> /etc/postfix/main.cf
+#debug_peer_list = some.domain
+#ENDOFFILE
+
+#EOF
+
+
+
 
 
 ##########
