@@ -589,6 +589,27 @@ systemctl restart dovecot
 
 fi
 
+############################################
+# Install Debug Alias Commands and Scripts #
+############################################
+
+
+#echo -e "${GREEN}build scripts for debugging\n${ENDCOLOR}"
+#cat << EOF >> /opt/email-server-enable-debug.sh
+#!/usr/bin/env bash
+#sed -i 's/auth_verbose = no/auth_verbose = yes/' /etc/dovecot/conf.d/10-logging.conf
+#sed -i 's/auth_verbose_passwords = no/auth_verbose_passwords = yes/' /etc/dovecot/conf.d/10-logging.conf
+#sed -i 's/auth_debug = no/auth_debug = yes/' /etc/dovecot/conf.d/10-logging.conf
+#sed -i 's/auth_debug_passwords = no/auth_debug_passwords = yes/' /etc/dovecot/conf.d/10-logging.conf
+#sed -i 's/mail_debug = no/mail_debug = yes/' /etc/dovecot/conf.d/10-logging.conf
+#sed -i 's/verbose_ssl = no/verbose_ssl = yes/' /etc/dovecot/conf.d/10-logging.conf
+
+#sed -i 's///' /etc/postfix/main.cf
+#sed -i 's///' /etc/postfix/main.cf
+
+#EOF
+
+
 ##########
 # Reboot #
 ##########
