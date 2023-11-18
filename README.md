@@ -39,7 +39,8 @@ Will need to complete the postfixadmin install via web
 
 # Customization    
 Toggle EricServic.es Repository usage    
-Toggle CertBot to load certificates   
+Toggle CertBot to load certificates 
+Toggle CertBot to use Staging Server (no rate limit for development)
 
 
 # Support    
