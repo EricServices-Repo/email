@@ -576,6 +576,11 @@ cat << EOF >> /etc/crontab
 0 12 * * * /usr/bin/certbot renew --quiet
 EOF
 
+echo -e "${GREEN}Restart services to load new certificate file\n${ENDCOLOR}"
+systemctl restart nginx
+systemctl restart postfix
+systemctl restart dovecot
+
 fi
 
 ##########
