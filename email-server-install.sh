@@ -371,6 +371,39 @@ user_query = SELECT maildir, 2000 AS uid, 2000 AS gid FROM mailbox WHERE usernam
 iterate_query = SELECT username AS user FROM mailbox
 EOF
 
+cat << EOF >> /etc/dovecot/conf.d/10-mail.conf
+mail_location = maildir:~/Maildir
+mail_home = /var/vmail/%d/%n
+EOF
+
+cat << EOF >> /etc/dovecot/conf.d/10-replicator.conf
+service replicator {
+  unix_listener replicator-doveadm {
+    mode = 0600
+  }
+}
+EOF
+
+if grep -q -F 'mailbox Drafts {' /etc/dovecot/conf.d/15-mailboxes.conf
+then
+    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+fi
+
+if grep -q -F 'mailbox Junk {' /etc/dovecot/conf.d/15-mailboxes.conf
+then
+    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+fi
+
+if grep -q -F 'mailbox Trash {' /etc/dovecot/conf.d/15-mailboxes.conf
+then
+    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+fi
+
+if grep -q -F 'mailbox Sent {' /etc/dovecot/conf.d/15-mailboxes.conf
+then
+    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+fi
+
 sed -i 's/#auth_username_format = %Lu/auth_username_format = %u/' /etc/dovecot/conf.d/10-auth.conf
 sed -i 's/!include auth-system.conf.ext/#!include auth-system.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
 sed -i 's/#!include auth-sql.conf.ext/!include auth-sql.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
