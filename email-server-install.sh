@@ -309,6 +309,9 @@ cat << EOF >> /var/www/html/postfixadmin/config.local.php
 \$CONF['footer_link'] = 'http://postfixadmin.$DOMAIN';
 EOF
 
+#NEED TO ADD THIS LINE TO THE CONFIG SETUP
+#php -r 'echo password_hash("$PFAPASSWORD", PASSWORD_DEFAULT);'
+
 echo -e "${GREEN}Build PostfixAdmin Nginx Config\n${ENDCOLOR}"
 
 cat << EOF >> /etc/nginx/conf.d/postfixadmin.conf
