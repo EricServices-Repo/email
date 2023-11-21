@@ -304,7 +304,7 @@ cat << EOF >> /var/www/html/postfixadmin/config.local.php
 \$CONF['encrypt'] = 'php_crypt:SHA512';
 \$CONF['dovecotpw'] = "/usr/bin/doveadm pw";
 
-\$CONF['setup_password'] = '$PFAHASPASSWORD';
+\$CONF['setup_password'] = '$PFAHASHPASSWORD';
 
 \$CONF['default_aliases'] = array (
     'abuse' => 'abuse@$DOMAIN',
