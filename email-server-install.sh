@@ -24,6 +24,7 @@
 # DOMAIN - Email Domain
 # SQLPASSWORD - MySQL Root Password
 # PFAPASSWORD - PostfixAdmin SQL Password
+# PFASETUPPASSWORD - PostfixAdmin Setup Password
 # ESENABLE - Toggle for Using Elasticsearch
 # KIBABA - Kibana IP Address
 # ELASTICSEARCH - Elasticsearch IP Address
@@ -66,12 +67,16 @@ DOMAIN="${DOMAIN:=ericservic.es}"
 echo "$DOMAIN"
 
 read -p "Set MySQL root PASSWORD [testing]:" SQLPASSWORD
-SQLPASSWORD="${SQLPASSWORD:=testing}"
+SQLPASSWORD="${SQLPASSWORD:=mysql}"
 echo "$SQLPASSWORD"
 
 read -p "Set PostfixAdmin SQL PASSWORD [postfixadmin]:" PFAPASSWORD
-PFAPASSWORD="${PFAPASSWORD:=postfixadmin}"
+PFAPASSWORD="${PFAPASSWORD:=postfixadminsql}"
 echo "$PFAPASSWORD"
+
+read -p "Set PostfixAdmin Setup PASSWORD [postfixadmin]:" PFASETUPPASSWORD
+PFASETUPPASSWORD="${PFASETUPPASSWORD:=postfixadminsetup}"
+echo "$PFASETUPPASSWORD"
 
 #read -p "Install Elasticsearch? [y/N]:" ESENABLE
 #ESENABLE="${ESENABLE:=n}"
@@ -284,6 +289,8 @@ mysql --user=root --password=$SQLPASSWORD -e "flush privileges;"
 
 echo -e "${GREEN}Create Local PostfixAdmin Config File\n${ENDCOLOR}"
 
+PFAHASHPASSWORD=`php -r 'echo password_hash("$PFASETUPPASSWORD", PASSWORD_DEFAULT);'`
+
 cat << EOF >> /var/www/html/postfixadmin/config.local.php
 <?php
 \$CONF['configured'] = true;
@@ -295,6 +302,8 @@ cat << EOF >> /var/www/html/postfixadmin/config.local.php
 \$CONF['database_name'] = 'postfixadmin';
 \$CONF['encrypt'] = 'php_crypt:SHA512';
 \$CONF['dovecotpw'] = "/usr/bin/doveadm pw";
+
+\$CONF['setup_password'] = '$PFAHASPASSWORD';
 
 \$CONF['default_aliases'] = array (
     'abuse' => 'abuse@$DOMAIN',
@@ -309,8 +318,6 @@ cat << EOF >> /var/www/html/postfixadmin/config.local.php
 \$CONF['footer_link'] = 'http://postfixadmin.$DOMAIN';
 EOF
 
-#NEED TO ADD THIS LINE TO THE CONFIG SETUP
-#php -r 'echo password_hash("$PFAPASSWORD", PASSWORD_DEFAULT);'
 
 echo -e "${GREEN}Build PostfixAdmin Nginx Config\n${ENDCOLOR}"
 
