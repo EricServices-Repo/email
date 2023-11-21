@@ -6,6 +6,7 @@
 ###############################################################
 # Version 1.1.1
 # Certbot Toggle for Staging Server
+# Collects PostfixAdmin Setup Password
 ###############################################################
 # Version 1.0.1
 # Collect Variables
