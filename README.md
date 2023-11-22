@@ -33,14 +33,14 @@ CERTBOT = Toggle to enable Certbot install
 
 
 # Post Installation    
-Will need to complete the postfixadmin install via web
--postfixadmin.domain.com or http://<IP-ADDR>/postfixadmin/public
+Will need to complete the postfixadmin install via web  
+-postfixadmin.domain.com or http://<IP-ADDR>/postfixadmin/public  
 
 
 # Customization    
-Toggle EricServic.es Repository usage    
-Toggle CertBot to load certificates 
-Toggle CertBot to use Staging Server (no rate limit for development)
+Toggle EricServic.es Repository usage  
+Toggle CertBot to load certificates  
+Toggle CertBot to use Staging Server (no rate limit for development)  
 
 
 # Support    
