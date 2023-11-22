@@ -142,7 +142,8 @@ fi
 
 if [ ! -f "$LOCALREPO_FILE" ]
 then 
-	echo -e "$LOCALREPO_FILE does not exist, creating it.\n"
+echo -e "$LOCALREPO_FILE does not exist, creating it.\n"
+
 cat << EOF >> /etc/yum.repos.d/localrepo.repo
 [localrepo-base]
 name= Local RockyLinux BaseOS
@@ -156,6 +157,7 @@ gpgcheck=0
 enabled=1
 EOF
 fi
+
 
 
 ###################
