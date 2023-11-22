@@ -290,10 +290,10 @@ mysql --user=root --password=$SQLPASSWORD -e "flush privileges;"
 
 echo -e "${GREEN}Create Local PostfixAdmin Config File\n${ENDCOLOR}"
 
-PFAHASHPASSWORD=`php -r 'echo password_hash("$PFASETUPPASSWORD", PASSWORD_DEFAULT);'`
+#PFAHASHPASSWORD=`php -r 'echo password_hash("$PFASETUPPASSWORD", PASSWORD_DEFAULT);'`
 
 # NEED TO SEE IF COMMAND BELOW WORKS
-#PFAHASHPASSWORD=`php -r "echo password_hash("$PFASETUPPASSWORD", PASSWORD_DEFAULT);'"`
+PFAHASHPASSWORD=`php -r "echo password_hash("$PFASETUPPASSWORD", PASSWORD_DEFAULT);'"`
 
 cat << EOF >> /var/www/html/postfixadmin/config.local.php
 <?php
@@ -641,39 +641,32 @@ fi
 ############################################
 
 
-#echo -e "${GREEN}build scripts for debugging\n${ENDCOLOR}"
-#cat << EOF >> /opt/email-server-enable-debug.sh
+echo -e "${GREEN}build scripts for debugging\n${ENDCOLOR}"
+cat << EOF >> /opt/email-server-enable-debug.sh
 #!/usr/bin/env bash
-#sed -i 's/auth_verbose = no/auth_verbose = yes/' /etc/dovecot/conf.d/10-logging.conf
-#sed -i 's/auth_verbose_passwords = no/auth_verbose_passwords = yes/' /etc/dovecot/conf.d/10-logging.conf
-#sed -i 's/auth_debug = no/auth_debug = yes/' /etc/dovecot/conf.d/10-logging.conf
-#sed -i 's/auth_debug_passwords = no/auth_debug_passwords = yes/' /etc/dovecot/conf.d/10-logging.conf
-#sed -i 's/mail_debug = no/mail_debug = yes/' /etc/dovecot/conf.d/10-logging.conf
-#sed -i 's/verbose_ssl = no/verbose_ssl = yes/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_verbose = no/auth_verbose = yes/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_verbose_passwords = no/auth_verbose_passwords = yes/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_debug = no/auth_debug = yes/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_debug_passwords = no/auth_debug_passwords = yes/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/mail_debug = no/mail_debug = yes/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/verbose_ssl = no/verbose_ssl = yes/' /etc/dovecot/conf.d/10-logging.conf
 
-#sed -i 's/debug_peer_level = 2/debug_peer_level = 6/' /etc/postfix/main.cf
-
-#cat << ENDOFFILE >> /etc/postfix/main.cf
-#debug_peer_list = $DOMAIN
-#ENDOFFILE
-
-#EOF
+sed -i 's/debug_peer_level = 2/debug_peer_level = 6/' /etc/postfix/main.cf
+sed -i "s/debug_peer_list =.*/debug_peer_list = $DOMAIN/" /etc/postfix/main.cf
+EOF
 
 
-#cat << EOF >> /opt/email-server-disable-debug.sh
+cat << EOF >> /opt/email-server-disable-debug.sh
 #!/usr/bin/env bash
-#sed -i 's/auth_verbose = yes/auth_verbose = no/' /etc/dovecot/conf.d/10-logging.conf
-#sed -i 's/auth_verbose_passwords = yes/auth_verbose_passwords = no/' /etc/dovecot/conf.d/10-logging.conf
-#sed -i 's/auth_debug = yes/auth_debug = no/' /etc/dovecot/conf.d/10-logging.conf
-#sed -i 's/auth_debug_passwords = yes/auth_debug_passwords = no/' /etc/dovecot/conf.d/10-logging.conf
-#sed -i 's/mail_debug = yes/mail_debug = no/' /etc/dovecot/conf.d/10-logging.conf
-#sed -i 's/verbose_ssl = yes/verbose_ssl = no/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_verbose = yes/auth_verbose = no/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_verbose_passwords = yes/auth_verbose_passwords = no/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_debug = yes/auth_debug = no/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_debug_passwords = yes/auth_debug_passwords = no/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/mail_debug = yes/mail_debug = no/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/verbose_ssl = yes/verbose_ssl = no/' /etc/dovecot/conf.d/10-logging.conf
 
-#sed -i 's/debug_peer_level = 6/debug_peer_level = 2/' /etc/postfix/main.cf
-
-#cat << ENDOFFILE >> /etc/postfix/main.cf
-#debug_peer_list = some.domain
-#ENDOFFILE
+sed -i 's/debug_peer_level = 6/debug_peer_level = 2/' /etc/postfix/main.cf
+sed -i "s/debug_peer_list =.*/debug_peer_list = some.domain/" /etc/postfix/main.cf
 
 #EOF
 
