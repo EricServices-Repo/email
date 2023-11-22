@@ -604,13 +604,18 @@ sed -i 's/verbose_ssl = yes/verbose_ssl = no/' /etc/dovecot/conf.d/10-logging.co
 
 sed -i 's/debug_peer_level = 6/debug_peer_level = 2/' /etc/postfix/main.cf
 sed -i "s/debug_peer_list =.*/debug_peer_list = some.domain/" /etc/postfix/main.cf
-
 EOF
+
+chmod +x /opt/email-server-enable-debug.sh
+chmod +x /opt/email-server-disable-debug.sh
+
 
 cat << EOF >> ~/.bashrc
 alias debug mail='/opt/email-server-enable-debug.sh'
-alas undebug mail='/opt/email-server-disable-debug.sh'
+alias undebug mail='/opt/email-server-disable-debug.sh'
 EOF
+
+
 
 #####################
 # Configure CertBot #
