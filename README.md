@@ -34,7 +34,7 @@ CERTBOT = Toggle to enable Certbot install
 
 # Post Installation    
 Will need to complete the postfixadmin install via web  
--postfixadmin.domain.com or http://<IP-ADDR>/postfixadmin/public  
+postfixadmin.domain.com or http://IP-ADDR/postfixadmin/public  
 
 
 # Customization    
