@@ -292,6 +292,9 @@ echo -e "${GREEN}Create Local PostfixAdmin Config File\n${ENDCOLOR}"
 
 PFAHASHPASSWORD=`php -r 'echo password_hash("$PFASETUPPASSWORD", PASSWORD_DEFAULT);'`
 
+# NEED TO SEE IF COMMAND BELOW WORKS
+#PFAHASHPASSWORD=`php -r "echo password_hash("$PFASETUPPASSWORD", PASSWORD_DEFAULT);'"`
+
 cat << EOF >> /var/www/html/postfixadmin/config.local.php
 <?php
 \$CONF['configured'] = true;
