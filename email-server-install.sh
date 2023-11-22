@@ -577,6 +577,45 @@ systemctl enable postfix
 systemctl restart postfix
 systemctl status postfix
 
+############################################
+# Install Debug Alias Commands and Scripts #
+############################################
+
+
+echo -e "${GREEN}build scripts for debugging\n${ENDCOLOR}"
+cat << EOF >> /opt/email-server-enable-debug.sh
+#!/usr/bin/env bash
+sed -i 's/auth_verbose = no/auth_verbose = yes/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_verbose_passwords = no/auth_verbose_passwords = yes/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_debug = no/auth_debug = yes/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_debug_passwords = no/auth_debug_passwords = yes/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/mail_debug = no/mail_debug = yes/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/verbose_ssl = no/verbose_ssl = yes/' /etc/dovecot/conf.d/10-logging.conf
+
+sed -i 's/debug_peer_level = 2/debug_peer_level = 6/' /etc/postfix/main.cf
+sed -i "s/debug_peer_list =.*/debug_peer_list = $DOMAIN/" /etc/postfix/main.cf
+EOF
+
+
+cat << EOF >> /opt/email-server-disable-debug.sh
+#!/usr/bin/env bash
+sed -i 's/auth_verbose = yes/auth_verbose = no/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_verbose_passwords = yes/auth_verbose_passwords = no/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_debug = yes/auth_debug = no/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/auth_debug_passwords = yes/auth_debug_passwords = no/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/mail_debug = yes/mail_debug = no/' /etc/dovecot/conf.d/10-logging.conf
+sed -i 's/verbose_ssl = yes/verbose_ssl = no/' /etc/dovecot/conf.d/10-logging.conf
+
+sed -i 's/debug_peer_level = 6/debug_peer_level = 2/' /etc/postfix/main.cf
+sed -i "s/debug_peer_list =.*/debug_peer_list = some.domain/" /etc/postfix/main.cf
+
+EOF
+
+cat << EOF >> ~/.bashrc
+alias debug mail='/opt/email-server-enable-debug.sh'
+alas undebug mail='/opt/email-server-disable-debug.sh'
+EOF
+
 #####################
 # Configure CertBot #
 #####################
@@ -635,45 +674,6 @@ systemctl restart postfix
 systemctl restart dovecot
 
 fi
-
-############################################
-# Install Debug Alias Commands and Scripts #
-############################################
-
-
-echo -e "${GREEN}build scripts for debugging\n${ENDCOLOR}"
-cat << EOF >> /opt/email-server-enable-debug.sh
-#!/usr/bin/env bash
-sed -i 's/auth_verbose = no/auth_verbose = yes/' /etc/dovecot/conf.d/10-logging.conf
-sed -i 's/auth_verbose_passwords = no/auth_verbose_passwords = yes/' /etc/dovecot/conf.d/10-logging.conf
-sed -i 's/auth_debug = no/auth_debug = yes/' /etc/dovecot/conf.d/10-logging.conf
-sed -i 's/auth_debug_passwords = no/auth_debug_passwords = yes/' /etc/dovecot/conf.d/10-logging.conf
-sed -i 's/mail_debug = no/mail_debug = yes/' /etc/dovecot/conf.d/10-logging.conf
-sed -i 's/verbose_ssl = no/verbose_ssl = yes/' /etc/dovecot/conf.d/10-logging.conf
-
-sed -i 's/debug_peer_level = 2/debug_peer_level = 6/' /etc/postfix/main.cf
-sed -i "s/debug_peer_list =.*/debug_peer_list = $DOMAIN/" /etc/postfix/main.cf
-EOF
-
-
-cat << EOF >> /opt/email-server-disable-debug.sh
-#!/usr/bin/env bash
-sed -i 's/auth_verbose = yes/auth_verbose = no/' /etc/dovecot/conf.d/10-logging.conf
-sed -i 's/auth_verbose_passwords = yes/auth_verbose_passwords = no/' /etc/dovecot/conf.d/10-logging.conf
-sed -i 's/auth_debug = yes/auth_debug = no/' /etc/dovecot/conf.d/10-logging.conf
-sed -i 's/auth_debug_passwords = yes/auth_debug_passwords = no/' /etc/dovecot/conf.d/10-logging.conf
-sed -i 's/mail_debug = yes/mail_debug = no/' /etc/dovecot/conf.d/10-logging.conf
-sed -i 's/verbose_ssl = yes/verbose_ssl = no/' /etc/dovecot/conf.d/10-logging.conf
-
-sed -i 's/debug_peer_level = 6/debug_peer_level = 2/' /etc/postfix/main.cf
-sed -i "s/debug_peer_list =.*/debug_peer_list = some.domain/" /etc/postfix/main.cf
-
-EOF
-
-cat << EOF >> ~/.bashrc
-alias debug mail='/opt/email-server-enable-debug.sh'
-alas undebug mail='/opt/email-server-disable-debug.sh'
-EOF
 
 ##########
 # Reboot #
