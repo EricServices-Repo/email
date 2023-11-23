@@ -367,6 +367,7 @@ systemctl restart nginx
 systemctl enable php-fpm
 systemctl restart php-fpm
 
+rm -f /opt/postfixadmin-3.3.13.tar.gz
 
 #####################
 # Configure Dovecot #
