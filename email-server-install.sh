@@ -602,6 +602,7 @@ sed -i 's/#verbose_ssl = no/verbose_ssl = yes/' /etc/dovecot/conf.d/10-logging.c
 
 sed -i 's/debug_peer_level = 2/debug_peer_level = 6/' /etc/postfix/main.cf
 sed -i "s/#debug_peer_list =.*/debug_peer_list = $DOMAIN/" /etc/postfix/main.cf
+echo -e "Navigate to /var/log/ to review Dovecot and Postfix debugs\n"
 EOF
 
 
@@ -617,6 +618,7 @@ sed -i 's/verbose_ssl = yes/#verbose_ssl = no/' /etc/dovecot/conf.d/10-logging.c
 
 sed -i 's/debug_peer_level = 6/debug_peer_level = 2/' /etc/postfix/main.cf
 sed -i "s/debug_peer_list =.*/#debug_peer_list = some.domain/" /etc/postfix/main.cf
+echo -e "Dovecot and Postfix debugs disabled\n"
 EOF
 
 chmod +x /opt/email-server-enable-debug.sh
