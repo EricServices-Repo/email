@@ -404,25 +404,11 @@ service replicator {
 }
 EOF
 
-#if grep -q -F 'mailbox Drafts {' /etc/dovecot/conf.d/15-mailboxes.conf
-#then
-#    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
-#fi
+sed -i '/special_use = \\Drafts/a auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+sed -i '/special_use = \\Junk/a auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+sed -i '/special_use = \\Trash/a auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+sed -i '/special_use = \\Sent/a auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
 
-#if grep -q -F 'mailbox Junk {' /etc/dovecot/conf.d/15-mailboxes.conf
-#then
-#    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
-#fi
-
-#if grep -q -F 'mailbox Trash {' /etc/dovecot/conf.d/15-mailboxes.conf
-#then
-#    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
-#fi
-
-#if grep -q -F 'mailbox Sent {' /etc/dovecot/conf.d/15-mailboxes.conf
-#then
-#    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
-#fi
 
 sed -i 's/#auth_username_format = %Lu/auth_username_format = %u/' /etc/dovecot/conf.d/10-auth.conf
 sed -i 's/!include auth-system.conf.ext/#!include auth-system.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
@@ -601,6 +587,8 @@ sed -i 's/#verbose_ssl = no/verbose_ssl = yes/' /etc/dovecot/conf.d/10-logging.c
 
 sed -i 's/debug_peer_level = 2/debug_peer_level = 6/' /etc/postfix/main.cf
 sed -i "s/#debug_peer_list =.*/debug_peer_list = $DOMAIN/" /etc/postfix/main.cf
+systemctl restart dovecot
+systemctl restart postfix
 echo -e "Navigate to /var/log/ to review Dovecot and Postfix debugs\n"
 EOF
 
@@ -617,6 +605,8 @@ sed -i 's/verbose_ssl = yes/#verbose_ssl = no/' /etc/dovecot/conf.d/10-logging.c
 
 sed -i 's/debug_peer_level = 6/debug_peer_level = 2/' /etc/postfix/main.cf
 sed -i "s/debug_peer_list =.*/#debug_peer_list = some.domain/" /etc/postfix/main.cf
+systemctl restart dovecot
+systemctl restart postfix
 echo -e "Dovecot and Postfix debugs disabled\n"
 EOF
 
