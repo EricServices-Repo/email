@@ -404,25 +404,25 @@ service replicator {
 }
 EOF
 
-if grep -q -F 'mailbox Drafts {' /etc/dovecot/conf.d/15-mailboxes.conf
-then
-    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
-fi
+#if grep -q -F 'mailbox Drafts {' /etc/dovecot/conf.d/15-mailboxes.conf
+#then
+#    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+#fi
 
-if grep -q -F 'mailbox Junk {' /etc/dovecot/conf.d/15-mailboxes.conf
-then
-    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
-fi
+#if grep -q -F 'mailbox Junk {' /etc/dovecot/conf.d/15-mailboxes.conf
+#then
+#    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+#fi
 
-if grep -q -F 'mailbox Trash {' /etc/dovecot/conf.d/15-mailboxes.conf
-then
-    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
-fi
+#if grep -q -F 'mailbox Trash {' /etc/dovecot/conf.d/15-mailboxes.conf
+#then
+#    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+#fi
 
-if grep -q -F 'mailbox Sent {' /etc/dovecot/conf.d/15-mailboxes.conf
-then
-    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
-fi
+#if grep -q -F 'mailbox Sent {' /etc/dovecot/conf.d/15-mailboxes.conf
+#then
+#    sed -i 'auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+#fi
 
 sed -i 's/#auth_username_format = %Lu/auth_username_format = %u/' /etc/dovecot/conf.d/10-auth.conf
 sed -i 's/!include auth-system.conf.ext/#!include auth-system.conf.ext/' /etc/dovecot/conf.d/10-auth.conf
