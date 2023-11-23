@@ -629,9 +629,6 @@ alias debugmail='sh /opt/email-server-enable-debug.sh'
 alias undebugmail='sh /opt/email-server-disable-debug.sh'
 EOF
 
-source ~/.bashrc
-
-
 
 #####################
 # Configure CertBot #
