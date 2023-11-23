@@ -289,7 +289,7 @@ mysql --user=root --password=$SQLPASSWORD -e "flush privileges;"
 
 
 echo -e "${GREEN}Create Local PostfixAdmin Config File\n${ENDCOLOR}"
-PFAHASHPASSWORD=`php -r '$PASSWORD = $_GET["PFASETUPPASSWORD"]; echo password_hash("$PASSWORD", PASSWORD_DEFAULT);'`
+PFAHASHPASSWORD=`php -r '$PASSWORD = $_GET["$PFASETUPPASSWORD"]; echo password_hash("$PASSWORD", PASSWORD_DEFAULT);'`
 
 cat << EOF >> /var/www/html/postfixadmin/config.local.php
 <?php
