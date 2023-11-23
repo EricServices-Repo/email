@@ -27,9 +27,6 @@
 # SQLPASSWORD - MySQL Root Password
 # PFAPASSWORD - PostfixAdmin SQL Password
 # PFASETUPPASSWORD - PostfixAdmin Setup Password
-# ESENABLE - Toggle for Using Elasticsearch
-# KIBABA - Kibana IP Address
-# ELASTICSEARCH - Elasticsearch IP Address
 ###############################################
 
 #################
