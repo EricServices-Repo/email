@@ -37,8 +37,8 @@ Will need to complete the postfixadmin install via web
 postfixadmin.domain.com or IP-ADDR/postfixadmin/public  
 
 # Debug Commands 
-debugmial - Sets the logging level higher for Dovecot and Postfix logs in /var/log  
-undebugmail - Sets the logging level back to original level  
+**debugmail** - Sets the logging level higher for Dovecot and Postfix logs in /var/log  
+**undebugmail** - Sets the logging level back to original level  
 
 # Customization    
 Toggle EricServic.es Repository usage  
