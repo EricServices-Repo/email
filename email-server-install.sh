@@ -388,6 +388,15 @@ mail_location = maildir:~/Maildir
 mail_home = /var/vmail/%d/%n
 EOF
 
+cat << EOF >> /etc/dovecot/conf.d/10-logging.conf
+log_path = /var/log/dovecot.log
+# If not set, use the value from log_path
+info_log_path = /var/log/dovecot-info.log
+# If not set, use the value from info_log_path
+debug_log_path = /var/log/dovecot-debug.log
+EOF
+
+
 cat << EOF >> /etc/dovecot/conf.d/10-replicator.conf
 service replicator {
   unix_listener replicator-doveadm {
@@ -592,7 +601,7 @@ sed -i 's/#mail_debug = no/mail_debug = yes/' /etc/dovecot/conf.d/10-logging.con
 sed -i 's/#verbose_ssl = no/verbose_ssl = yes/' /etc/dovecot/conf.d/10-logging.conf
 
 sed -i 's/debug_peer_level = 2/debug_peer_level = 6/' /etc/postfix/main.cf
-sed -i "s/debug_peer_list =.*/debug_peer_list = $DOMAIN/" /etc/postfix/main.cf
+sed -i "s/#debug_peer_list =.*/debug_peer_list = $DOMAIN/" /etc/postfix/main.cf
 EOF
 
 
@@ -607,7 +616,7 @@ sed -i 's/mail_debug = yes/#mail_debug = no/' /etc/dovecot/conf.d/10-logging.con
 sed -i 's/verbose_ssl = yes/#verbose_ssl = no/' /etc/dovecot/conf.d/10-logging.conf
 
 sed -i 's/debug_peer_level = 6/debug_peer_level = 2/' /etc/postfix/main.cf
-sed -i "s/debug_peer_list =.*/debug_peer_list = some.domain/" /etc/postfix/main.cf
+sed -i "s/debug_peer_list =.*/#debug_peer_list = some.domain/" /etc/postfix/main.cf
 EOF
 
 chmod +x /opt/email-server-enable-debug.sh
