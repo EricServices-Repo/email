@@ -266,6 +266,26 @@ mysql -e "FLUSH PRIVILEGES"
 # Any subsequent tries to run queries this way will get access denied because lack of usr/pwd
 
 
+##############################
+#  MySQL Primary Replication #
+##############################
+
+#echo -e "${GREEN}Configure MySQL Replication\n${ENDCOLOR}"
+#mysql --user=root --password=$SQLPASSWORD -e "CREATE USER replication@'%' identified by '$SQLPASSWORD';"
+#mysql --user=root --password=$SQLPASSWORD -e "GRANT REPLICATION SLAVE ON *.* TO replication@'%';"
+#mysql --user=root --password=$SQLPASSWORD -e "flush privileges;"
+
+#echo -e "Configure MySQL Firewall for Secondary Node\n"
+#firewall-cmd --new-zone=mariadb-access --permanent
+#firewall-cmd --zone=mariadb-access --add-source=$SECONDARYIPADDR/32 --permanent
+#firewall-cmd --zone=mariadb-access --add-port=3306/tcp  --permanent
+#firewall-cmd --reload
+
+#echo -e "Reconfigure MySQL Listening Interface\n"
+#sed -i "s/#bind-address=0.0.0.0/bind-address=$IPADDRESS/" /etc/my.cnf.d/mariadb-server.cnf
+
+
+
 
 ##########################
 # Configure PostfixAdmin #
