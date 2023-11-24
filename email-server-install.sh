@@ -273,7 +273,10 @@ mysql -e "FLUSH PRIVILEGES"
 #echo -e "${GREEN}Configure MySQL Replication\n${ENDCOLOR}"
 #mysql --user=root --password=$SQLPASSWORD -e "CREATE USER replication@'%' identified by '$SQLPASSWORD';"
 #mysql --user=root --password=$SQLPASSWORD -e "GRANT REPLICATION SLAVE ON *.* TO replication@'%';"
-#mysql --user=root --password=$SQLPASSWORD -e "flush privileges;"
+#mysql --user=root --password=$SQLPASSWORD -e "FLUSH PRIVILEGES;"
+#mysql --user=root --password=$SQLPASSWORD -e "FLUSH TABLES WITH READ LOCK;"
+#mysql --user=root --password=$SQLPASSWORD -e "UNLOCK TABLES;"
+
 
 #echo -e "Configure MySQL Firewall for Secondary Node\n"
 #firewall-cmd --new-zone=mariadb-access --permanent
