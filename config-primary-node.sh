@@ -39,11 +39,11 @@ read -p "Secondary node IP Address [192.168.1.2]:" SECONDARYIPADDRESS
 SECONDARYIPADDRESS="${SECONDARYIPADDRESS:=192.168.1.2}"
 echo "$SECONDARYIPADDRESS"
 
-read -p "MySQL Password [password]:" SQLPASSWORD
+read -p "MySQL Root Password [password]:" SQLPASSWORD
 SQLPASSWORD="${SQLPASSWORD:=password}"
 echo "$SQLPASSWORD"
 
-read -p "MySQL Password [password]:" REPLICATIONPASSWORD
+read -p "MySQL Replication User Password [password]:" REPLICATIONPASSWORD
 REPLICATIONPASSWORD="${REPLICATIONPASSWORD:=password}"
 echo "$REPLICATIONPASSWORD"
 
