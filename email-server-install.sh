@@ -371,6 +371,33 @@ server {
 }
 EOF
 
+cat << EOF >> /etc/nginx/conf.d/postfixuser.conf
+server {
+   listen 80;
+   listen [::]:80;
+   server_name email.$DOMAIN;
+
+   root /var/www/html/postfixadmin/public/user;
+   index index.php index.html;
+
+   access_log /var/log/nginx/postfixuser_access.log;
+   error_log /var/log/nginx/postfixuser_error.log;
+
+   location / {
+       try_files \$uri \$uri/ /index.php;
+   }
+
+   location ~ ^/(.+\.php)$ {
+        try_files \$uri =404;
+        fastcgi_pass unix:/run/php-fpm/www.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        include /etc/nginx/fastcgi_params;
+   }
+}
+EOF
+
+
 sed -i 's/\/usr\/share\/nginx\/html;/\/var\/www\/html;/' /etc/nginx/nginx.conf
 
 echo -e "${GREEN}Build user and group for vmail\n${ENDCOLOR}"
@@ -431,7 +458,7 @@ EOF
 sed -i '/special_use = \\Drafts/a auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
 sed -i '/special_use = \\Junk/a auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
 sed -i '/special_use = \\Trash/a auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
-sed -i '/special_use = \\Sent/a auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
+sed -i '/mailbox Sent {/a auto = subscribe' /etc/dovecot/conf.d/15-mailboxes.conf
 
 
 sed -i 's/#auth_username_format = %Lu/auth_username_format = %u/' /etc/dovecot/conf.d/10-auth.conf
