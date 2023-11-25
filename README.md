@@ -10,6 +10,7 @@ Script to automatically install dovecot, postfix and postfixadmin for email serv
   - imap.domain.com
   - smtp.domain.com
   - postfixadmin.domain.com
+  - email.domain.com
   - MX Records
   - DMARC/SPF Records
 
@@ -35,6 +36,11 @@ CERTBOT = Toggle to enable Certbot install
 # Post Installation    
 Will need to complete the postfixadmin install via web  
 postfixadmin.domain.com or IP-ADDR/postfixadmin/public  
+
+
+# Access
+postfixadmin.domain.com - Admin Portal
+email.domain.com - End User Portal
 
 # Debug Commands 
 **debugmail** - Sets the logging level higher for Dovecot and Postfix logs in /var/log  
