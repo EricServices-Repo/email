@@ -5,9 +5,10 @@
 #
 ###############################################################
 # Version 1.0.1
-#
-# 
-# 
+# Creates MySQL Replication User
+# Configure Firewall to allow Secondary Node access
+# Reconfigure MySQL listening interface
+# Add Required files for MySQL config
 ################################################################
 
 #################
