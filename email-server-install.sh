@@ -673,6 +673,38 @@ alias undebugmail='sh /opt/email-server-disable-debug.sh'
 EOF
 
 
+########################
+# Download all Scripts #
+########################
+
+
+wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-add-domain.sh
+wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-replication-primary.sh
+wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-replication-secondary.sh
+wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-server-disable-debug.sh
+wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-server-enable-debug.sh
+wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-help.sh
+wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-update.sh
+
+chmod +x /opt/mail-scripts/mail-add-domain.sh
+chmod +x /opt/mail-scripts/mail-replication-primary.sh
+chmod +x /opt/mail-scripts/mail-replication-secondary.sh
+chmod +x /opt/mail-scripts/mail-server-disable-debug.sh
+chmod +x /opt/mail-scripts/mail-server-enable-debug.sh
+chmod +x /opt/mail-scripts/mail-help.sh
+chmod +x /opt/mail-scripts/mail-update.sh
+
+cat << EOF >> ~/.bashrc
+alias maildebug='sh /opt/scripts/mail-server-enable-debug.sh'
+alias mailundebug='sh /opt/scripts/mail-server-disable-debug.sh'
+alias maildomain='sh /opt/scripts/mail-add-domain.sh'
+alias mailreplicationprimary='sh /opt/scripts/mail-replication-primary.sh'
+alias mailreplicationsecondary='sh /opt/scripts/mail-replication-secondary.sh'
+alias mailhelp='sh /opt/scripts/mail-help.sh'
+alias mailupdate='sh /opt/scripts/mail-help.sh'
+EOF
+
+
 #####################
 # Configure CertBot #
 #####################
