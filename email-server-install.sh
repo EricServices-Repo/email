@@ -645,11 +645,11 @@ fi
 ##########
 # Reboot #
 ##########
-echo -e "${GREEN}Installation Complete!\n${ENDCOLOR}"
-echo -e "Navigate to https://postfixadmin.$DOMAIN to complete the admin configuration\n"
-echo -e "${RED}WARNING: If configuring for MySQL Replication, please complete the following commands first\n${ENDCOLOR}"
-echo -e "Primary Node: run the command ${bold}mailreplicationprimary${normal}\n"
-echo -e "Secondary Node: run the command ${bold}mailreplicationsecondary${normal}\n"
+echo -e "${GREEN}Installation Complete!${ENDCOLOR}"
+echo -e "Navigate to https://postfixadmin.$DOMAIN to complete the admin configuration"
+echo -e "${RED}WARNING: If configuring for MySQL Replication, please complete the following commands first${ENDCOLOR}"
+echo -e "Primary Node: run the command ${bold}mailreplicationprimary${normal}"
+echo -e "Secondary Node: run the command ${bold}mailreplicationsecondary${normal}"
 echo -e "For all mail commands available use ${bold}mailhelp${normal}\n\n"
 
 read -p "Would you like to reboot?[y/N]:" REBOOT
