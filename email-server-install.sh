@@ -584,7 +584,7 @@ alias maildomain='sh /opt/scripts/mail-add-domain.sh'
 alias mailreplicationprimary='sh /opt/scripts/mail-replication-primary.sh'
 alias mailreplicationsecondary='sh /opt/scripts/mail-replication-secondary.sh'
 alias mailhelp='sh /opt/scripts/mail-help.sh'
-alias mailupdate='sh /opt/scripts/mail-help.sh'
+alias mailupdate='sh /opt/scripts/mail-update.sh'
 EOF
 
 
