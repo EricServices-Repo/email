@@ -4,4 +4,5 @@ echo -e "${bold}maildebug${normal} - Turns on the debug logging for Dovecot and 
 echo -e "${bold}mailundebug${normal} - Turns off the debug logging for Dovecot and Postfix\n"
 echo -e "${bold}maildomain${normal} - Allows you to add another domain to be whitelisted and added to Certbot\n"
 echo -e "${bold}mailreplicationprimary${normal} - This command must be run on the primary server\nbefore completion of installation in PostfixAdmin\nFailure to do so may result in invalid MySQL Database\n"
-echo -e "${bold}mailreplicationsecondary${normal}- This command must be run on the secondary server\n before completion of installation in PostfixAdmin\Do not use the PostfixAdmin installation on the Secondary node\n"
+echo -e "${bold}mailreplicationsecondary${normal} - This command must be run on the secondary server\n before completion of installation in PostfixAdmin\Do not use the PostfixAdmin installation on the Secondary node\n"
+echo -e "${bold}mailreplicationsecondary${normal} - This commands checks and updates any new scripts added to be downloaded\n"
