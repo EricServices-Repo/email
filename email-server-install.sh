@@ -4,11 +4,13 @@
 #Installs Dovecot and Postfix email server
 #
 ###############################################################
+# Version 1.1.2
+# wget multiple scripts for post installation configuration
+###############################################################
 # Version 1.1.1
 # Certbot Toggle for Staging Server
 # Collects PostfixAdmin Setup Password
 # Build Debug alias commands
-# 
 ###############################################################
 # Version 1.0.1
 # Collect Variables
@@ -704,11 +706,7 @@ ssl_cert = </etc/letsencrypt/live/mail.$DOMAIN/fullchain.pem
 ssl_key = </etc/letsencrypt/live/mail.$DOMAIN/privkey.pem
 EOF
 
-
 echo -e "${GREEN}Update Postfix to use Let's Encypt Certificate\n${ENDCOLOR}"
-#sed -i 's/smtpd_tls_cert_file = \/etc\/pki\/tls\/certs\/postfix.pem/smtpd_tls_cert_file = \/etc\/letsencrypt\/live\/mail."$DOMAIN"\/fullchain.pem/' /etc/postfix/main.cf
-#sed -i 's/smtpd_tls_key_file = \/etc\/pki\/tls\/private\/postfix.key/smtpd_tls_key_file = \/etc\/letsencrypt\/live\/mail."$DOMAIN"\/privkey.pem/' /etc/postfix/main.cf
-
 sed -i 's/smtpd_tls_cert_file = \/etc\/pki\/tls\/certs\/postfix.pem/#smtpd_tls_cert_file = \/etc\/pki\/tls\/certs\/postfix.pem/' /etc/postfix/main.cf
 sed -i 's/smtpd_tls_key_file = \/etc\/pki\/tls\/private\/postfix.key/#smtpd_tls_key_file = \/etc\/pki\/tls\/private\/postfix.key/' /etc/postfix/main.cf
 
@@ -716,7 +714,6 @@ cat << EOF >> /etc/postfix/main.cf
 smtpd_tls_cert_file = /etc/letsencrypt/live/mail.$DOMAIN/fullchain.pem
 smtpd_tls_key_file = /etc/letsencrypt/live/mail.$DOMAIN/privkey.pem
 EOF
-
 
 echo -e "${GREEN}Configure Crontab daily to renew SSL Cert\n${ENDCOLOR}"
 cat << EOF >> /etc/crontab
@@ -733,11 +730,18 @@ fi
 ##########
 # Reboot #
 ##########
+echo -e "${GREEN}Installation Complete!\n${ENDCOLOR}"
+echo -e "Navigate to https://postfixadmin.$DOMAIN to complete the Admin configuration\n"
+echo -e "${RED}WARNING: If configuring for MySQL Replication, please complete the following commands first\n${ENDCOLOR}"
+echo -e "Primary Node: run the command ${bold}mail-primary-replication${normal}\n"
+echo -e "Secondary Node: run the command ${bold}mail-secondary-replication${normal}\n\n"
+
+
 read -p "Would you like to reboot?[y/N]:" REBOOT
 REBOOT="${REBOOT:=n}"
 if [[ "$REBOOT" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
-    echo -e "Rebooting to allow for Open-VM-Tools and Permissive Mode.\n"
+    echo -e "Rebooting to allow for Open-VM-Tools, Permissive Mode, and Alias Commands\n"
     sleep 5
     shutdown -r now
 fi
