@@ -561,13 +561,13 @@ systemctl status postfix
 #############################
 
 
-wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-add-domain.sh
-wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-replication-primary.sh
-wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-replication-secondary.sh
-wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-server-disable-debug.sh
-wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-server-enable-debug.sh
-wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-help.sh
-wget -P /opt/mail-scripts https://github.com/EricServices-Repo/email/blob/a91ef01cd9fcde5811c4543d9f1dd92e2ba67d69/scripts/mail-update.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-add-domain.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-replication-primary.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-replication-secondary.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-server-disable-debug.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-server-enable-debug.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-help.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-update.sh
 
 chmod +x /opt/mail-scripts/mail-add-domain.sh
 chmod +x /opt/mail-scripts/mail-replication-primary.sh
