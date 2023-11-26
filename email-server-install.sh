@@ -578,13 +578,13 @@ chmod +x /opt/mail-scripts/mail-help.sh
 chmod +x /opt/mail-scripts/mail-update.sh
 
 cat << EOF >> ~/.bashrc
-alias maildebug='sh /opt/scripts/mail-server-enable-debug.sh'
-alias mailundebug='sh /opt/scripts/mail-server-disable-debug.sh'
-alias maildomain='sh /opt/scripts/mail-add-domain.sh'
-alias mailreplicationprimary='sh /opt/scripts/mail-replication-primary.sh'
-alias mailreplicationsecondary='sh /opt/scripts/mail-replication-secondary.sh'
-alias mailhelp='sh /opt/scripts/mail-help.sh'
-alias mailupdate='sh /opt/scripts/mail-update.sh'
+alias maildebug='sh /opt/mail-scripts/mail-server-enable-debug.sh'
+alias mailundebug='sh /opt/mail-scripts/mail-server-disable-debug.sh'
+alias maildomain='sh /opt/mail-scripts/mail-add-domain.sh'
+alias mailreplicationprimary='sh /opt/mail-scripts/mail-replication-primary.sh'
+alias mailreplicationsecondary='sh /opt/mail-scripts/mail-replication-secondary.sh'
+alias mailhelp='sh /opt/mail-scripts/mail-help.sh'
+alias mailupdate='sh /opt/mail-scripts/mail-update.sh'
 EOF
 
 
