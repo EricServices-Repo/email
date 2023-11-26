@@ -80,52 +80,10 @@ read -p "Set PostfixAdmin Setup PASSWORD [postfixadmin]:" PFASETUPPASSWORD
 PFASETUPPASSWORD="${PFASETUPPASSWORD:=postfixadminsetup}"
 echo "$PFASETUPPASSWORD"
 
-#read -p "Install Elasticsearch? [y/N]:" ESENABLE
-#ESENABLE="${ESENABLE:=n}"
-#echo "$ESENABLE"
-
-#read -p "Set KIBANA [192.168.1.13]:" KIBANA
-#KIBANA="${KIBANA:=192.168.1.13}"
-#echo "$KIBANA"
-
-#read -p "Set ELASTICSEARCH [192.168.1.23]:" ELASTICSEARCH
-#ELASTICSEARCH="${ELASTICSEARCH:=192.168.1.23}"
-#echo "$ELASTICSEARCH"
-
 ####################
 # End of Variables #
 ####################
 
-
-######################
-# ElasticSearch Repo #
-######################
-#echo -e "${GREEN}\nConfigure the Elasticsearch Repository.${ENDCOLOR}"
-#sleep 1
-#
-#if [[ "$ESENABLE" =~ ^([yY][eE][sS]|[yY])$ ]]
-#then
-#ELASTICSEARCH_FILE=/etc/yum.repos.d/elasticsearch.repo
-#if test -f "$ELASTICSEARCH_FILE"; then
-#    echo -e "$ELASTICSEARCH_FILE already exists, no need to create.\n"
-#fi
-#
-#if [ ! -f "$ELASTICSEARCH_FILE" ]
-#then 
-#	echo -e "$ELASTICSEARCH_FILE does not exist, creating it.\n"
-#cat << EOF >> /etc/yum.repos.d/elasticsearch.repo
-#[elasticsearch]
-#name=Elasticsearch repository for 7.x packages
-#baseurl=https://artifacts.elastic.co/packages/7.x/yum
-#gpgcheck=1
-#gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
-#enabled=1
-#autorefresh=1
-#type=rpm-md
-#EOF
-#fi
-
-#fi
 
 ############################
 # Local EricServic.es Repo #
@@ -158,7 +116,6 @@ gpgcheck=0
 enabled=1
 EOF
 fi
-
 
 
 ###################
@@ -266,30 +223,6 @@ mysql -e "DROP DATABASE test"
 # Make our changes take effect
 mysql -e "FLUSH PRIVILEGES"
 # Any subsequent tries to run queries this way will get access denied because lack of usr/pwd
-
-
-##############################
-#  MySQL Primary Replication #
-##############################
-
-#echo -e "${GREEN}Configure MySQL Replication\n${ENDCOLOR}"
-#mysql --user=root --password=$SQLPASSWORD -e "CREATE USER replication@'%' identified by '$SQLPASSWORD';"
-#mysql --user=root --password=$SQLPASSWORD -e "GRANT REPLICATION SLAVE ON *.* TO replication@'%';"
-#mysql --user=root --password=$SQLPASSWORD -e "FLUSH PRIVILEGES;"
-#mysql --user=root --password=$SQLPASSWORD -e "FLUSH TABLES WITH READ LOCK;"
-#mysql --user=root --password=$SQLPASSWORD -e "UNLOCK TABLES;"
-
-
-#echo -e "Configure MySQL Firewall for Secondary Node\n"
-#firewall-cmd --new-zone=mariadb-access --permanent
-#firewall-cmd --zone=mariadb-access --add-source=$SECONDARYIPADDR/32 --permanent
-#firewall-cmd --zone=mariadb-access --add-port=3306/tcp  --permanent
-#firewall-cmd --reload
-
-#echo -e "Reconfigure MySQL Listening Interface\n"
-#sed -i "s/#bind-address=0.0.0.0/bind-address=$IPADDRESS/" /etc/my.cnf.d/mariadb-server.cnf
-
-
 
 
 ##########################
