@@ -233,9 +233,9 @@ sleep 1
 
 wget -P /opt/ https://github.com/postfixadmin/postfixadmin/archive/postfixadmin-3.3.13.tar.gz
 tar xvf /opt/postfixadmin-3.3.13.tar.gz -C /var/www/html
-mv /var/www/html/postfixadmin-postfixadmin-3.3.13 /var/www/html/postfixadmin
-mkdir /var/www/html/postfixadmin/templates_c
-chmod a+w /var/www/html/postfixadmin/templates_c
+mv /var/www/html/postfixadmin-postfixadmin-3.3.13 /var/www/html/admin
+mkdir /var/www/html/admin/templates_c
+chmod a+w /var/www/html/admin/templates_c
 
 echo -e "${GREEN}Create PostfixAdmin Database\n${ENDCOLOR}"
 mysql --user=root --password=$SQLPASSWORD -e "CREATE DATABASE IF NOT EXISTS postfixadmin;"
@@ -250,7 +250,7 @@ mysql --user=root --password=$SQLPASSWORD -e "flush privileges;"
 echo -e "${GREEN}Create Local PostfixAdmin Config File\n${ENDCOLOR}"
 PFAHASHPASSWORD=`php -r 'echo password_hash("$PFASETUPPASSWORD", PASSWORD_DEFAULT);'`
 
-cat << EOF >> /var/www/html/postfixadmin/config.local.php
+cat << EOF >> /var/www/html/admin/config.local.php
 <?php
 \$CONF['configured'] = true;
 \$CONF['database_type'] = 'mysqli';
@@ -274,7 +274,7 @@ cat << EOF >> /var/www/html/postfixadmin/config.local.php
 \$CONF['vacation_domain'] = 'autoreply.$DOMAIN';
 
 \$CONF['footer_text'] = 'Return to Site';
-\$CONF['footer_link'] = 'http://postfixadmin.$DOMAIN';
+\$CONF['footer_link'] = 'http://admin.$DOMAIN';
 EOF
 
 
@@ -284,9 +284,9 @@ cat << EOF >> /etc/nginx/conf.d/postfixadmin.conf
 server {
    listen 80;
    listen [::]:80;
-   server_name postfixadmin.$DOMAIN;
+   server_name admin.$DOMAIN;
 
-   root /var/www/html/postfixadmin/public;
+   root /var/www/html/admin/public;
    index index.php index.html;
 
    access_log /var/log/nginx/postfixadmin_access.log;
@@ -310,9 +310,9 @@ cat << EOF >> /etc/nginx/conf.d/postfixuser.conf
 server {
    listen 80;
    listen [::]:80;
-   server_name email.$DOMAIN;
+   server_name user.$DOMAIN;
 
-   root /var/www/html/postfixadmin/public/user;
+   root /var/www/html/admin/public/user;
    index index.php index.html;
 
    access_log /var/log/nginx/postfixuser_access.log;
@@ -587,6 +587,19 @@ alias mailhelp='sh /opt/mail-scripts/mail-help.sh'
 alias mailupdate='sh /opt/mail-scripts/mail-update.sh'
 EOF
 
+#######################
+# Configure RoundCube #
+#######################
+
+echo -e "${GREEN}Install and Configure Roundcube\n${ENDCOLOR}"
+sleep 1
+
+wget -P /opt/ https://github.com/roundcube/roundcubemail/releases/download/1.6.5/roundcubemail-1.6.5-complete.tar.gz
+
+tar xvf /opt/roundcubemail-1.6.5-complete.tar.gz -C /var/www/html
+mv /var/www/html/roundcubemail-1.6.5 /var/www/html/mail
+
+
 
 #####################
 # Configure CertBot #
@@ -600,13 +613,13 @@ sleep 1
 if [[ "$CERTBOT" =~ ^([sS])$ ]]
 then
 echo -e "${GREEN}Installing Staging Certificates\n${ENDCOLOR}"
-certbot run -n --nginx --agree-tos --test-cert -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
+certbot run -n --nginx --agree-tos --test-cert -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,admin.$DOMAIN -m  admin@$DOMAIN --redirect
 fi
 
 if [[ "$CERTBOT" =~ ^([yY][eE][sS]|[yY])$ ]]
 then
 echo -e "${GREEN}Installing Production Certificates\n${ENDCOLOR}"
-certbot run -n --nginx --agree-tos -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,postfixadmin.$DOMAIN -m  admin@$DOMAIN --redirect
+certbot run -n --nginx --agree-tos -d mail.$DOMAIN,imap.$DOMAIN,smtp.$DOMAIN,admin.$DOMAIN -m  admin@$DOMAIN --redirect
 fi
 
 echo -e "${GREEN}Update Dovecot to use Let's Encypt Certificate\n${ENDCOLOR}"
@@ -646,7 +659,8 @@ fi
 # Reboot #
 ##########
 echo -e "${GREEN}Installation Complete!${ENDCOLOR}"
-echo -e "Navigate to https://postfixadmin.$DOMAIN to complete the admin configuration"
+echo -e "Navigate to https://admin.$DOMAIN to complete the PostfixAdmin configuration"
+echo -e "Navigate to http://mail.$DOMAIN to complete the RoundCube configuration"
 echo -e "${RED}WARNING: If configuring for MySQL Replication, please complete the following commands first${ENDCOLOR}"
 echo -e "Primary Node: run the command ${BOLD}mailreplicationprimary${NORMAL}"
 echo -e "Secondary Node: run the command ${BOLD}mailreplicationsecondary${NORMAL}"
