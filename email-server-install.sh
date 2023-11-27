@@ -607,6 +607,11 @@ mysql --user=root --password=$SQLPASSWORD -e "CREATE DATABASE roundcubemail CHAR
 mysql --user=root --password=$SQLPASSWORD -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost IDENTIFIED BY '$PFAPASSWORD';"
 mysql --user=root --password=$SQLPASSWORD -e "FLUSH PRIVILEGES;"
 
+chmod 777 /var/www/html/mail/temp
+chmod 777 /var/www/html/mail/logs
+
+rm -f /opt/roundcubemail-1.6.5-complete.tar.gz
+
 
 #####################
 # Configure CertBot #
