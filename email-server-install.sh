@@ -610,6 +610,32 @@ mysql --user=root --password=$SQLPASSWORD -e "FLUSH PRIVILEGES;"
 chmod 777 /var/www/html/mail/temp
 chmod 777 /var/www/html/mail/logs
 
+cat << EOF >> /etc/nginx/conf.d/roundcube.conf
+server {
+   listen 80;
+   listen [::]:80;
+   server_name mail.$DOMAIN;
+
+   root /var/www/html/mail;
+   index index.php index.html;
+
+   access_log /var/log/nginx/postfixadmin_access.log;
+   error_log /var/log/nginx/postfixadmin_error.log;
+
+   location / {
+       try_files \$uri \$uri/ /index.php;
+   }
+
+   location ~ ^/(.+\.php)$ {
+        try_files \$uri =404;
+        fastcgi_pass unix:/run/php-fpm/www.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        include /etc/nginx/fastcgi_params;
+   }
+}
+EOF
+
 rm -f /opt/roundcubemail-1.6.5-complete.tar.gz
 
 
