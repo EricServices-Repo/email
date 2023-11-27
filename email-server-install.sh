@@ -4,6 +4,10 @@
 #Installs Dovecot and Postfix email server
 #
 ###############################################################
+# Version 1.2.1
+# Added Configuration for Roundcube
+# Renamed Url for PostfixAdmin to Admin
+###############################################################
 # Version 1.1.2
 # wget multiple scripts for post installation configuration
 ###############################################################
