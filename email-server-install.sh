@@ -603,6 +603,9 @@ wget -P /opt/ https://github.com/roundcube/roundcubemail/releases/download/1.6.5
 tar xvf /opt/roundcubemail-1.6.5-complete.tar.gz -C /var/www/html
 mv /var/www/html/roundcubemail-1.6.5 /var/www/html/mail
 
+mysql --user=root --password=$SQLPASSWORD -e "CREATE DATABASE roundcubemail CHARACTER SET utf8 COLLATE utf8_general_ci;"
+mysql --user=root --password=$SQLPASSWORD -e "GRANT ALL PRIVILEGES ON roundcubemail.* TO roundcube@localhost IDENTIFIED BY '$PFAPASSWORD';"
+mysql --user=root --password=$SQLPASSWORD -e "FLUSH PRIVILEGES;"
 
 
 #####################
