@@ -6,11 +6,11 @@ Script to automatically install dovecot, postfix and postfixadmin for email serv
 # Dependencies  
 - Rocky Linux, Redhat, Fedora, or CentOS
 - DNS Configuration
-  - mail.domain.com
-  - imap.domain.com
-  - smtp.domain.com
-  - postfixadmin.domain.com
-  - email.domain.com
+  - mail.domain.com - used for Roundcube Webmail
+  - imap.domain.com - used for Dovecot IMAP service
+  - smtp.domain.com - used by Postfix SMTP service
+  - admin.domain.com - used by PostfixAdmin for admin management
+  - user.domain.com - used by PostfixAdmin for end user management
   - MX Records
   - DMARC/SPF Records
 
