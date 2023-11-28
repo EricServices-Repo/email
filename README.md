@@ -39,8 +39,9 @@ postfixadmin.domain.com or IP-ADDR/postfixadmin/public
 
 
 # Access
-postfixadmin.domain.com - Admin Portal  
-email.domain.com - End User Portal  
+admin.domain.com - Admin Portal  
+user.domain.com - End User Portal
+mail.domain.com - Email Web Portal
 
 # Debug Commands 
 **debugmail** - Sets the logging level higher for Dovecot and Postfix logs in /var/log  
