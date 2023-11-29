@@ -4,6 +4,9 @@
 #Installs Dovecot and Postfix email server
 #
 ###############################################################
+# Version 1.2.2
+# Changed repo from email to mail
+###############################################################
 # Version 1.2.1
 # Added Configuration for Roundcube
 # Renamed Url for PostfixAdmin to Admin
@@ -565,13 +568,13 @@ systemctl status postfix
 #############################
 
 
-wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-add-domain.sh
-wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-replication-primary.sh
-wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-replication-secondary.sh
-wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-server-disable-debug.sh
-wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-server-enable-debug.sh
-wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-help.sh
-wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/email/main/scripts/mail-update.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/mail/main/scripts/mail-add-domain.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/mail/main/scripts/mail-replication-primary.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/mail/main/scripts/mail-replication-secondary.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/mail/main/scripts/mail-server-disable-debug.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/mail/main/scripts/mail-server-enable-debug.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/mail/main/scripts/mail-help.sh
+wget -P /opt/mail-scripts https://raw.githubusercontent.com/EricServices-Repo/mail/main/scripts/mail-update.sh
 
 chmod +x /opt/mail-scripts/mail-add-domain.sh
 chmod +x /opt/mail-scripts/mail-replication-primary.sh
