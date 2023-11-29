@@ -17,11 +17,11 @@ Script to automatically install dovecot, postfix and postfixadmin for email serv
 
 # Installation    
 ## Live (Read the Code first!)  
-    bash <(curl -s https://raw.githubusercontent.com/EricServices-Repo/email/main/email-server-install.sh)  
+    bash <(curl -s https://raw.githubusercontent.com/EricServices-Repo/mail/main/email-server-install.sh)  
     
 ## Manual:  
     cd /opt  
-    wget https://raw.githubusercontent.com/EricServices-Repo/email/main/email-server-install.sh
+    wget https://raw.githubusercontent.com/EricServices-Repo/mail/main/email-server-install.sh
     chmod +x email-server-install.sh
     ./email-server-install.sh
 
