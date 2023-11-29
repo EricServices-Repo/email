@@ -36,8 +36,8 @@ CERTBOT = Toggle to enable Certbot install
 
 
 # Post Installation    
-admin.domain.com/setup.php - PostfixAdmin Web Installer
-mail.domain.com/installer - RoundCube Web Installer
+admin.domain.com/setup.php - PostfixAdmin Web Installer  
+mail.domain.com/installer - RoundCube Web Installer  
 
 
 # Access
