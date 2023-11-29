@@ -1,7 +1,7 @@
-# EricServices-Email-Server
+# EricServices-Mail-Server
 
 
-Script to automatically install dovecot, postfix and postfixadmin for email server
+Script to automatically install dovecot, postfix, postfixadmin, and roundcube for mail server
 
 # Dependencies  
 - Rocky Linux, Redhat, Fedora, or CentOS
