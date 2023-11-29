@@ -26,16 +26,18 @@ Script to automatically install dovecot, postfix and postfixadmin for email serv
     ./email-server-install.sh
 
 
-# Variables    
+# Variables  
+DOMAIN = The domain for the email server  
 SQLPASSWORD = Define the root user password for mysql  
 PFAPASSWORD = Define the postfixadmin user password for mysql  
+PFASETUPPASSWORD = The PostfixAdmin web install setup password  
 ESREPO = EricServic.es Rocky Linux Repository  
 CERTBOT = Toggle to enable Certbot install  
 
 
 # Post Installation    
-Will need to complete the postfixadmin install via web  
-postfixadmin.domain.com or IP-ADDR/postfixadmin/public  
+admin.domain.com/setup.php - PostfixAdmin Web Installer
+mail.domain.com/installer - RoundCube Web Installer
 
 
 # Access
@@ -43,9 +45,11 @@ admin.domain.com - Admin Portal
 user.domain.com - End User Portal  
 mail.domain.com - Email Web Portal  
 
+
 # Debug Commands 
 **debugmail** - Sets the logging level higher for Dovecot and Postfix logs in /var/log  
 **undebugmail** - Sets the logging level back to original level  
+
 
 # Customization    
 Toggle EricServic.es Repository usage  
