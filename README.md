@@ -17,13 +17,13 @@ Script to automatically install dovecot, postfix, postfixadmin, and roundcube fo
 
 # Installation    
 ## Live (Read the Code first!)  
-    bash <(curl -s https://raw.githubusercontent.com/EricServices-Repo/mail/main/email-server-install.sh)  
+    bash <(curl -s https://raw.githubusercontent.com/EricServices-Repo/mail/main/install.sh)  
     
 ## Manual:  
     cd /opt  
-    wget https://raw.githubusercontent.com/EricServices-Repo/mail/main/email-server-install.sh
-    chmod +x email-server-install.sh
-    ./email-server-install.sh
+    wget https://raw.githubusercontent.com/EricServices-Repo/mail/main/install.sh
+    chmod +x install.sh
+    ./install.sh
 
 
 # Variables  
