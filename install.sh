@@ -3,37 +3,6 @@
 #
 #Installs Dovecot and Postfix email server
 #
-###############################################################
-# Version 1.2.3
-# Fixed issues with Roundcube installer
-# Fixed issues with dovecot.conf and 10-master.conf
-###############################################################
-# Version 1.2.2
-# Changed repo from email to mail
-###############################################################
-# Version 1.2.1
-# Added Configuration for Roundcube
-# Renamed Url for PostfixAdmin to Admin
-###############################################################
-# Version 1.1.2
-# wget multiple scripts for post installation configuration
-###############################################################
-# Version 1.1.1
-# Certbot Toggle for Staging Server
-# Collects PostfixAdmin Setup Password
-# Build Debug alias commands
-###############################################################
-# Version 1.0.1
-# Collect Variables
-# EricServic.es Repos Toggle
-# Install and Configure SQL DB for postfixadmin/users
-# Updates, Install Packages + Firewall Ports
-# Configure PostfixAdmin
-# Configure Dovecot
-# Configures Postfix
-# Configure Certbot
-################################################################
-
 ##### Variables ###############################
 # ESREPO - EricServic.es Repo
 # CERTBOT - Toggle for Installing Certbot
