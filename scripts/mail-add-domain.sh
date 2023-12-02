@@ -52,6 +52,13 @@ EOF
 
 postmap /etc/postfix/whitelist
 
+cat << EOF >> /opt/mail-scripts/certbot-domains.txt
+mail.$DOMAIN
+imap.$DOMAIN
+smtp.$DOMAIN
+admin.$DOMAIN
+
+readarray -t URL < /opt/mail-scripts/certbot-domains.txt
 
 echo -e "${GREEN}Collect all current domains${ENDCOLOR}"
 certbot certificates
