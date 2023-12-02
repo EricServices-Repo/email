@@ -4,6 +4,10 @@
 #Installs Dovecot and Postfix email server
 #
 ###############################################################
+# Version 1.2.3
+# Fixed issues with Roundcube installer
+# Fixed issues with dovecot.conf and 10-master.conf
+###############################################################
 # Version 1.2.2
 # Changed repo from email to mail
 ###############################################################
@@ -312,33 +316,6 @@ server {
    }
 }
 EOF
-
-cat << EOF >> /etc/nginx/conf.d/postfixuser.conf
-server {
-   listen 80;
-   listen [::]:80;
-   server_name user.$DOMAIN;
-
-   root /var/www/html/admin/public/user;
-   index index.php index.html;
-
-   access_log /var/log/nginx/postfixuser_access.log;
-   error_log /var/log/nginx/postfixuser_error.log;
-
-   location / {
-       try_files \$uri \$uri/ /index.php;
-   }
-
-   location ~ ^/(.+\.php)$ {
-        try_files \$uri =404;
-        fastcgi_pass unix:/run/php-fpm/www.sock;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-        include /etc/nginx/fastcgi_params;
-   }
-}
-EOF
-
 
 sed -i 's/\/usr\/share\/nginx\/html;/\/var\/www\/html;/' /etc/nginx/nginx.conf
 
