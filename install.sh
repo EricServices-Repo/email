@@ -388,6 +388,31 @@ info_log_path = /var/log/dovecot-info.log
 debug_log_path = /var/log/dovecot-debug.log
 EOF
 
+cat << EOF >> /etc/dovecot/conf.d/10-master.conf
+ # Postfix smtp-auth
+ unix_listener /var/spool/postfix/private/auth {
+    mode = 0660
+    user = postfix
+    group = postfix
+ }
+
+service stats {
+    unix_listener stats-reader {
+    user = nginx
+    group = nginx
+    mode = 0660
+}
+
+unix_listener stats-writer {
+    user = nginx
+    group = nginx
+    mode = 0660
+  }
+}
+EOF
+
+sed -i 's/unix_listener lmtp {/unix_listener \/var\/spool\/postfix\/private\/dovecot-lmtp {/' /etc/dovecot/conf.d/10-master.conf
+sed -i '/unix_listener \/var\/spool\/postfix\/private\/dovecot-lmtp {/a group = postfix\nmode = 0600\nuser = postfix' /etc/dovecot/conf.d/10-master.conf
 
 cat << EOF >> /etc/dovecot/conf.d/10-replicator.conf
 service replicator {
