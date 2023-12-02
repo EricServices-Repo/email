@@ -365,6 +365,9 @@ rm -f /opt/postfixadmin-3.3.13.tar.gz
 echo -e "${GREEN}Saving old dovecot config\n${ENDCOLOR}"
 cp /etc/dovecot/dovecot.conf /etc/dovecot/dovecot.conf.old
 
+sed -i 's/#protocols = imap pop3 lmtp submission/protocols = imap pop3 lmtp/' /etc/dovecot/dovecot.conf
+sed -i 's/#listen = \*, ::/listen = \*, ::/' /etc/dovecot/dovecot.conf
+
 echo -e "${GREEN}Configure Dovecot Config\n${ENDCOLOR}"
 cat << EOF >> /etc/dovecot/dovecot-sql.conf.ext
 driver = mysql
