@@ -622,6 +622,12 @@ alias mailhelp='sh /opt/mail-scripts/mail-help.sh'
 alias mailupdate='sh /opt/mail-scripts/mail-update.sh'
 EOF
 
+cat << EOF >> /opt/mail-scripts/certbot-domains.txt
+mail.$DOMAIN
+imap.$DOMAIN
+smtp.$DOMAIN
+admin.$DOMAIN
+
 #######################
 # Configure RoundCube #
 #######################
