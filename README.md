@@ -41,7 +41,6 @@ mail.domain.com/installer - RoundCube Web Installer
 
 # Access
 admin.domain.com - Admin Portal  
-user.domain.com - End User Portal  
 mail.domain.com - Email Web Portal  
 
 
