@@ -10,7 +10,6 @@ Script to automatically install dovecot, postfix, postfixadmin, and roundcube fo
   - imap.domain.com - used for Dovecot IMAP service
   - smtp.domain.com - used by Postfix SMTP service
   - admin.domain.com - used by PostfixAdmin for admin management
-  - user.domain.com - used by PostfixAdmin for end user management
   - MX Records
   - DMARC/SPF Records
 
