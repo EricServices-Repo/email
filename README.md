@@ -1,7 +1,16 @@
-# EricServices-Mail-Server
+# EricServices-Mail-Server  
+Installation Script to Install:  
+Dovecot - MDA Service  
+Postfix - MTA Service  
+PostfixAdmin - Domain and User Management  
+RoundCube - Email Web Client 
+Let's Encrypt SSL Certificate
 
-
-Script to automatically install dovecot, postfix, postfixadmin, and roundcube for mail server
+# Features   
+Dovecot and Postfix SSL Required  
+Postfix whitelist to manage unwanted connections  
+Postfix client restrictions  
+SQL Database for multi-domain user management  
 
 # Dependencies  
 - Rocky Linux, Redhat, Fedora, or CentOS
