@@ -1,9 +1,9 @@
 # EricServices-Mail-Server  
 Installation Script to Install:  
-Dovecot - MDA Service  
-Postfix - MTA Service  
-PostfixAdmin - Domain and User Management  
-RoundCube - Email Web Client 
+**Dovecot** - MDA Service  
+**Postfix** - MTA Service  
+**PostfixAdmin** - Domain and User Management  
+**RoundCube** - Email Web Client 
 Let's Encrypt SSL Certificate
 
 # Features   
