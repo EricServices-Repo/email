@@ -570,6 +570,7 @@ mail.$DOMAIN
 imap.$DOMAIN
 smtp.$DOMAIN
 admin.$DOMAIN
+EOF
 
 #######################
 # Configure RoundCube #
