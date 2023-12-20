@@ -45,6 +45,10 @@ read -p "Update Certbot? [Y/n]:" CERTBOT
 CERTBOT="${CERTBOT:=y}"
 echo "$CERTBOT"
 
+
+#####################
+# Process whitelist #
+#####################
 echo -e "${GREEN}Process whitelist update${ENDCOLOR}"
 cat << EOF >> /etc/postfix/whitelist
 $DOMAIN OK
@@ -52,11 +56,104 @@ EOF
 
 postmap /etc/postfix/whitelist
 
+########################
+# Process nginx config #
+########################
+cat << EOF >> /etc/nginx/conf.d/postfixadmin-$DOMAIN.conf
+server {
+   server_name admin.$DOMAIN;
+
+   root /var/www/html/admin/public;
+   index index.php index.html;
+
+   access_log /var/log/nginx/postfixadmin_access.log;
+   error_log /var/log/nginx/postfixadmin_error.log;
+
+   location / {
+       try_files $uri $uri/ /index.php;
+   }
+
+   location ~ ^/(.+\.php)$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/run/php-fpm/www.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include /etc/nginx/fastcgi_params;
+   }
+
+    listen [::]:443 ssl; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/mail.ericembling.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/mail.ericembling.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+}
+server {
+    if ($host = admin.$DOMAIN) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+   listen 80;
+   listen [::]:80;
+   server_name admin.$DOMAIN;
+    return 404; # managed by Certbot
+}
+EOF
+
+cat << EOF >> /etc/nginx/conf.d/roundcube-$DOMAIN.conf
+server {
+   server_name mail.$DOMAIN;
+
+   root /var/www/html/mail;
+   index index.php index.html;
+
+   access_log /var/log/nginx/postfixadmin_access.log;
+   error_log /var/log/nginx/postfixadmin_error.log;
+
+   location / {
+       try_files $uri $uri/ /index.php;
+   }
+
+   location ~ ^/(.+\.php)$ {
+        try_files $uri =404;
+        fastcgi_pass unix:/run/php-fpm/www.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include /etc/nginx/fastcgi_params;
+   }
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/mail.ericembling.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/mail.ericembling.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+server {
+    if ($host = mail.$DOMAIN) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+   listen 80;
+   listen [::]:80;
+   server_name mail.$DOMAIN;
+    return 404; # managed by Certbot
+}
+EOF
+
+
+
+
 cat << EOF >> /opt/mail-scripts/certbot-domains.txt
 mail.$DOMAIN
 imap.$DOMAIN
 smtp.$DOMAIN
 admin.$DOMAIN
+EOF
+
 
 readarray -t URL < /opt/mail-scripts/certbot-domains.txt
 
