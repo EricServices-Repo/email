@@ -70,57 +70,55 @@ echo "$PFASETUPPASSWORD"
 # Local EricServic.es Repo #
 ############################
 if [[ "$ESREPO" =~ ^([yY][eE][sS]|[yY])$ ]]
-then
+    then
+    echo -e "${GREEN}Configure the EricServic.es Local Repository.${ENDCOLOR}"
+    sleep 1
 
-echo -e "${GREEN}Configure the EricServic.es Local Repository.${ENDCOLOR}"
-sleep 1
+    LOCALREPO_FILE=/etc/yum.repos.d/localrepo.repo
+    if test -f "$LOCALREPO_FILE"; then
+        echo -e "$LOCALREPO_FILE already exists, no need to create.\n"
+    fi
 
-LOCALREPO_FILE=/etc/yum.repos.d/localrepo.repo
-if test -f "$LOCALREPO_FILE"; then
-    echo -e "$LOCALREPO_FILE already exists, no need to create.\n"
-fi
+    if [ ! -f "$LOCALREPO_FILE" ]
+    then 
+        echo -e "$LOCALREPO_FILE does not exist, creating it.\n"
+        cat << EOF >> /etc/yum.repos.d/localrepo.repo
+        [localrepo-base]
+        name= Local RockyLinux BaseOS
+        baseurl=http://mirror.ericembling.me/rocky-linux/\$releasever/BaseOS/\$basearch/os/
+        gpgcheck=0
+        enabled=1
+        [localrepo-appstream]
+        name=Local RockyLinux AppStream
+        baseurl=http://mirror.ericembling.me/rocky-linux/\$releasever/AppStream/\$basearch/os/
+        gpgcheck=0
+        enabled=1
+        EOF
+    fi
 
-if [ ! -f "$LOCALREPO_FILE" ]
-then 
-echo -e "$LOCALREPO_FILE does not exist, creating it.\n"
+    echo -e "${GREEN}Move old Rocky Linux Repos so they are not used.\n${ENDCOLOR}"
+    sleep 1
 
-cat << EOF >> /etc/yum.repos.d/localrepo.repo
-[localrepo-base]
-name= Local RockyLinux BaseOS
-baseurl=http://mirror.ericembling.me/rocky-linux/\$releasever/BaseOS/\$basearch/os/
-gpgcheck=0
-enabled=1
-[localrepo-appstream]
-name=Local RockyLinux AppStream
-baseurl=http://mirror.ericembling.me/rocky-linux/\$releasever/AppStream/\$basearch/os/
-gpgcheck=0
-enabled=1
-EOF
-fi
+    ROCKYBASEOS_FILE=/etc/yum.repos.d/Rocky-BaseOS.repo.old
+    ROCKYAPPSTREAM_FILE=/etc/yum.repos.d/Rocky-AppStream.repo.old
 
-echo -e "${GREEN}Move old Rocky Linux Repos so they are not used.\n${ENDCOLOR}"
-sleep 1
+    if test -f "$ROCKYBASEOS_FILE"; then
+        echo -e "$ROCKYBASEOS_FILE already exists, no need to move.\n"
+    fi
 
-ROCKYBASEOS_FILE=/etc/yum.repos.d/Rocky-BaseOS.repo.old
-ROCKYAPPSTREAM_FILE=/etc/yum.repos.d/Rocky-AppStream.repo.old
+    if [ ! -f "$ROCKYBASEOS_FILE" ]
+    then 
+        mv /etc/yum.repos.d/Rocky-BaseOS.repo /etc/yum.repos.d/Rocky-BaseOS.repo.old
+    fi
 
-if test -f "$ROCKYBASEOS_FILE"; then
-    echo -e "$ROCKYBASEOS_FILE already exists, no need to move.\n"
-fi
+    if test -f "$ROCKYAPPSTREAM_FILE"; then
+        echo -e "$ROCKYAPPSTREAM_FILE already exists, no need to move.\n"
+    fi
 
-if [ ! -f "$ROCKYBASEOS_FILE" ]
-then 
-mv /etc/yum.repos.d/Rocky-BaseOS.repo /etc/yum.repos.d/Rocky-BaseOS.repo.old
-fi
-
-if test -f "$ROCKYAPPSTREAM_FILE"; then
-    echo -e "$ROCKYAPPSTREAM_FILE already exists, no need to move.\n"
-fi
-
-if [ ! -f "$ROCKYAPPSTREAM_FILE" ]
-then 
-mv /etc/yum.repos.d/Rocky-AppStream.repo /etc/yum.repos.d/Rocky-AppStream.repo.old
-fi
+    if [ ! -f "$ROCKYAPPSTREAM_FILE" ]
+    then 
+        mv /etc/yum.repos.d/Rocky-AppStream.repo /etc/yum.repos.d/Rocky-AppStream.repo.old
+    fi
 
 fi
 
