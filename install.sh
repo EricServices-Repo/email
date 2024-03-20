@@ -620,6 +620,27 @@ EOF
 rm -f /opt/roundcubemail-1.6.5-complete.tar.gz
 
 
+################
+# Log rotation #
+################
+cat << EOF >> /etc/logrotate.d/dovecot
+/var/log/dovecot.log {
+  weekly
+  rotate 4
+  missingok
+  notifempty
+  compress
+  delaycompress
+  sharedscripts
+  postrotate
+  doveadm log reopen
+  endscript
+}
+EOF
+
+
+
+
 #####################
 # Configure CertBot #
 #####################
@@ -665,6 +686,7 @@ EOF
 echo -e "${GREEN}Configure Crontab daily to renew SSL Cert\n${ENDCOLOR}"
 cat << EOF >> /etc/crontab
 0 12 * * * /usr/bin/certbot renew --quiet --deploy-hook "service postfix reload; service dovecot reload"
+0 1  * * * postfix logrotate
 EOF
 
 echo -e "${GREEN}Restart services to load new certificate file\n${ENDCOLOR}"
