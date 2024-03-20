@@ -620,6 +620,29 @@ EOF
 rm -f /opt/roundcubemail-1.6.5-complete.tar.gz
 
 
+################
+# Log rotation #
+################
+cat << EOF >> /etc/logrotate.d/dovecot
+/var/log/dovecot.log {
+  weekly
+  rotate 4
+  missingok
+  notifempty
+  compress
+  delaycompress
+  sharedscripts
+  postrotate
+  doveadm log reopen
+  endscript
+}
+EOF
+
+cat << EOF >> /etc/crontab
+0 1  * * * postfix logrotate
+EOF
+
+
 #####################
 # Configure CertBot #
 #####################
