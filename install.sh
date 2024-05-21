@@ -687,7 +687,7 @@ EOF
 
 echo -e "${GREEN}Configure Crontab daily to renew SSL Cert\n${ENDCOLOR}"
 cat << EOF >> /etc/crontab
-0 12 * * * /usr/bin/certbot renew --quiet --deploy-hook "service postfix reload; service dovecot reload"
+0 12 * * * /usr/bin/certbot renew --quiet --deploy-hook "systemctl restart postfix; systemctl restart dovecot"
 EOF
 
 echo -e "${GREEN}Restart services to load new certificate file\n${ENDCOLOR}"
