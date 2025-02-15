@@ -74,7 +74,7 @@ if [[ "$ESREPO" =~ ^([yY][eE][sS]|[yY])$ ]]
     echo -e "${GREEN}Configure the EricServic.es Local Repository.${ENDCOLOR}"
     sleep 1
 
-    LOCALREPO_FILE=/etc/yum.repos.d/localrepo.repo
+    LOCALREPO_FILE=/etc/yum.repos.d/ericservicesrepo.repo
     if test -f "$LOCALREPO_FILE"; then
         echo -e "$LOCALREPO_FILE already exists, no need to create.\n"
     fi
@@ -82,15 +82,15 @@ if [[ "$ESREPO" =~ ^([yY][eE][sS]|[yY])$ ]]
     if [ ! -f "$LOCALREPO_FILE" ]
     then 
         echo -e "$LOCALREPO_FILE does not exist, creating it.\n"
-        cat << EOF >> /etc/yum.repos.d/localrepo.repo
+        cat << EOF >> /etc/yum.repos.d/ericservicesrepo.repo
         [localrepo-base]
         name= Local RockyLinux BaseOS
-        baseurl=http://mirror.ericembling.me/rocky-linux/\$releasever/BaseOS/\$basearch/os/
+        baseurl=http://mirror.ericservic.es/rocky-linux/\$releasever/BaseOS/\$basearch/os/
         gpgcheck=0
         enabled=1
         [localrepo-appstream]
         name=Local RockyLinux AppStream
-        baseurl=http://mirror.ericembling.me/rocky-linux/\$releasever/AppStream/\$basearch/os/
+        baseurl=http://mirror.ericservic.es/rocky-linux/\$releasever/AppStream/\$basearch/os/
         gpgcheck=0
         enabled=1
         EOF
